@@ -1,0 +1,124 @@
+{
+    "Passed":  29,
+    "Failed":  0,
+    "Screens":  14,
+    "Tests":  [
+                  {
+                      "Name":  "Pantalla 0 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 1 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 2 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 3 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 4 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 5 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 6 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 7 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 8 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 9 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 10 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 11 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 12 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pantalla 13 exclusiva",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Aceptar abre bienvenida",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Bienvenida abre migración",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Migración guarda y avanza",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "GPU excluyente y corrección al volver",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Disco y equipo siguen orden",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Contador Office",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Omitir limpia Office",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Contador de aplicaciones",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Tema actualiza controles",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Restablecer tema",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Solo acciones implementadas pasan al motor",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Pendientes se explican sin traducirlos a otras acciones",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Resumen separa capacidades",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Guardar y restaurar selecciones",
+                      "Passed":  true
+                  },
+                  {
+                      "Name":  "Plan vacío no abre ejecución",
+                      "Passed":  true
+                  }
+              ],
+    "ChangesToWindows":  "Ninguno; solo archivo de selección de prueba"
+}

@@ -1,0 +1,384 @@
+{
+  "cards": {
+    "Migration": [
+      {
+        "control": "Migration0",
+        "value": "Professional"
+      },
+      {
+        "control": "Migration1",
+        "value": "Enterprise"
+      },
+      {
+        "control": "Migration2",
+        "value": "Workstation"
+      }
+    ],
+    "Gpu": [
+      {
+        "control": "Gpu0",
+        "value": "INTEL"
+      },
+      {
+        "control": "Gpu1",
+        "value": "NVIDIA"
+      },
+      {
+        "control": "Gpu2",
+        "value": "AMD"
+      }
+    ],
+    "Disk": [
+      {
+        "control": "Disk0",
+        "value": "SSD / M.2"
+      },
+      {
+        "control": "Disk1",
+        "value": "HDD"
+      }
+    ],
+    "Device": [
+      {
+        "control": "Device0",
+        "value": "Desktop"
+      },
+      {
+        "control": "Device1",
+        "value": "Laptop"
+      }
+    ],
+    "Mode": [
+      {
+        "control": "Mode0",
+        "value": "Seguro"
+      },
+      {
+        "control": "Mode1",
+        "value": "Medio"
+      },
+      {
+        "control": "Mode2",
+        "value": "Extremo"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "control": "App0_0",
+      "label": "Framework",
+      "action": "runtime.netfx3",
+      "group": "Apps"
+    },
+    {
+      "control": "App0_1",
+      "label": ".NET 8",
+      "action": "app.dotnet8",
+      "group": "Apps"
+    },
+    {
+      "control": "App0_2",
+      "label": "VCredist",
+      "action": "app.vcredist",
+      "group": "Apps"
+    },
+    {
+      "control": "App0_3",
+      "label": "DirectX",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App0_4",
+      "label": "MSI Afterburner",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App1_0",
+      "label": "Free Download Man.",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App1_1",
+      "label": "Google Chrome",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App1_2",
+      "label": "Mozilla Firefox",
+      "action": "app.firefox",
+      "group": "Apps"
+    },
+    {
+      "control": "App1_3",
+      "label": "Opera",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App1_4",
+      "label": "Brave",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App2_0",
+      "label": "AIMP",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App2_1",
+      "label": "PotPlayer",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App2_2",
+      "label": "VLC",
+      "action": "app.vlc",
+      "group": "Apps"
+    },
+    {
+      "control": "App2_3",
+      "label": "K-Lite Codec",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App3_0",
+      "label": "7 Zip",
+      "action": "app.7zip",
+      "group": "Apps"
+    },
+    {
+      "control": "App3_1",
+      "label": "WinRAR",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App3_2",
+      "label": "Krenshot",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App3_3",
+      "label": "Monitor HUB",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App3_4",
+      "label": "MENÚ Extendido",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "App3_5",
+      "label": "Java v8 Update",
+      "action": "",
+      "group": "Apps"
+    },
+    {
+      "control": "Debloat0",
+      "label": "Quitar Noticias",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat1",
+      "label": "Quitar Comentarios",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat2",
+      "label": "Quitar Primeros Pasos",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat3",
+      "label": "Quitar Cámara",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat4",
+      "label": "Quitar MS Teams",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat5",
+      "label": "Quitar Tu Teléfono",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat6",
+      "label": "Quitar Obtener Ayuda",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat7",
+      "label": "Quitar Contactos",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat8",
+      "label": "Quitar Mapas",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat9",
+      "label": "Quitar Skype",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat10",
+      "label": "Quitar OneNote",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat11",
+      "label": "Quitar Correo y Calendario",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat12",
+      "label": "Quitar MS Designer",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat13",
+      "label": "Quitar Clipchamp",
+      "action": "remove.clipchamp",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat14",
+      "label": "Quitar Rep. Multimedia",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat15",
+      "label": "Quitar Office Hub",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat16",
+      "label": "Quitar Paint 3D",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat17",
+      "label": "Quitar Realidad Mixta",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat18",
+      "label": "Quitar Clima y Tiempo",
+      "action": "remove.weather",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat19",
+      "label": "Quitar MS To Do",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat20",
+      "label": "Quitar Solitario",
+      "action": "remove.solitaire",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat21",
+      "label": "Quitar Películas y TV",
+      "action": "",
+      "group": "Debloat"
+    },
+    {
+      "control": "Debloat22",
+      "label": "Quitar Visor 3D",
+      "action": "",
+      "group": "Debloat"
+    }
+  ],
+  "themes": [
+    "NEXO",
+    "XP",
+    "SEVEN",
+    "NEON",
+    "BASIC",
+    "MAC"
+  ],
+  "combos": {
+    "Wallpaper": [
+      "Wallpaper Hojas",
+      "Wallpaper Neon",
+      "Wallpaper Ice",
+      "Wallpaper Nexo",
+      "Default"
+    ],
+    "Rainmeter": [
+      "Skin Neon",
+      "Ninguno",
+      "Skin Canopy",
+      "Skin NeonBasic",
+      "Skin Round"
+    ],
+    "Icons": [
+      "Icons Vivid",
+      "Default",
+      "Icons Windows12",
+      "Icons Numix"
+    ],
+    "StartMenu": [
+      "Inicio Launch",
+      "Default",
+      "Inicio Win7",
+      "Inicio Win11"
+    ],
+    "Dock": [
+      "Dock Neon",
+      "Default",
+      "Dock Fluent",
+      "Dock MAC"
+    ]
+  },
+  "pages": [
+    "Terms",
+    "Welcome",
+    "Migration",
+    "Gpu",
+    "Disk",
+    "Device",
+    "Office",
+    "Apps",
+    "Custom",
+    "Mode",
+    "Debloat",
+    "Review",
+    "Process",
+    "Finish"
+  ]
+}

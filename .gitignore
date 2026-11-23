@@ -1,0 +1,24 @@
+# Ejecutables y paquetes generados localmente.
+/NexoAssistant.exe
+/SHA256*.txt
+*.zip
+*.iso
+*.wim
+*.esd
+*.log
+*.tmp
+.env
+.env.*
+
+# Conservar solo la guía y las capturas de la entrega publicada.
+/guia/*
+!/guia/Guia-del-cliente.html
+!/guia/entrega/
+
+# Salidas locales de pruebas y editores.
+/captures/
+/test-output/
+/runs/
+.vs/
+.vscode/
+__pycache__/

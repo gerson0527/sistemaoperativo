@@ -1,0 +1,16 @@
+{
+  "version": "0.3.0",
+  "fecha": "2026-11-11",
+  "pruebas": {
+    "motor": 22,
+    "interfaz": 29,
+    "motor_ui_e_integracion": 20
+  },
+  "total": 71,
+  "fallidas": 0,
+  "pantallas": 14,
+  "render": "WPF real, 1920x1080",
+  "ejecucion_de_instaladores": "No realizada; pendiente de VM",
+  "cambios_host": "Solo clave temporal de prueba del Registro, restaurada y eliminada; archivos de prueba y capturas",
+  "iso_modificada": false
+}
