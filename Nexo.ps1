@@ -11,8 +11,8 @@ $script:page=0;$script:inventory=$null;$script:loading=$false;$script:started=$f
 $settings=New-Object Xml.XmlReaderSettings
 $reader=[Xml.XmlReader]::Create((Join-Path $PSScriptRoot 'Window.xaml'),$settings)
 try{$script:window=[Windows.Markup.XamlReader]::Load($reader)}finally{$reader.Dispose()}
-$window.Width=[math]::Min(1536,[Windows.SystemParameters]::WorkArea.Width-24)
-$window.Height=[math]::Min(900,[Windows.SystemParameters]::WorkArea.Height-24)
+$window.Width=[math]::Min(1140,[Windows.SystemParameters]::WorkArea.Width-24)
+$window.Height=[math]::Min(770,[Windows.SystemParameters]::WorkArea.Height-24)
 [xml]$xml=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'Window.xaml') -Raw -Encoding UTF8
 $ns=New-Object Xml.XmlNamespaceManager($xml.NameTable);$ns.AddNamespace('x','http://schemas.microsoft.com/winfx/2006/xaml')
 $script:ui=@{}
@@ -47,50 +47,70 @@ function Restore-Selection {
 }
 function Update-Selection {
  Read-Selection
- foreach($group in $catalog.cards.PSObject.Properties){foreach($card in $group.Value){$selected=$state.Cards[$group.Name] -eq $card.value;$ui[$card.control].Content=if($selected){'✓ Seleccionado'}else{'Seleccionar'};$ui[$card.control+'Card'].BorderBrush=if($selected){$ui[$card.control].BorderBrush}else{'#1B2C47'};$ui[$card.control+'Card'].BorderThickness=if($selected){2.5}else{1.5}}}
+ foreach($group in $catalog.cards.PSObject.Properties){foreach($card in $group.Value){$selected=$state.Cards[$group.Name] -eq $card.value;$ui[$card.control].Content=if($selected){'✓ Seleccionado'}else{'Seleccionar'};$ui[$card.control+'Card'].BorderBrush=if($selected){$ui[$card.control].BorderBrush}else{'#CAD8D1'};$ui[$card.control+'Card'].BorderThickness=if($selected){2.5}else{1.5}}}
  $officeCount=0
- foreach($name in @('Word','Excel','PowerPoint','Outlook','Access','Visio','Publisher','OneNote')){$selected=$ui['Office'+$name].IsChecked -eq $true;if($selected){$officeCount++};$ui['OfficeLabel'+$name].Text=if($selected){'✓  '+$name}else{'○  '+$name};$ui['OfficeLabel'+$name].Foreground=if($selected){'#72A6FF'}else{'#AABCD4'};$ui['OfficeCard'+$name].BorderBrush=if($selected){'#4D80EF'}else{'#1B2C47'}}
+ foreach($name in @('Word','Excel','PowerPoint','Outlook','Access','Visio','Publisher','OneNote')){$selected=$ui['Office'+$name].IsChecked -eq $true;if($selected){$officeCount++};$ui['OfficeLabel'+$name].Text=if($selected){'✓  '+$name}else{'○  '+$name};$ui['OfficeLabel'+$name].Foreground=if($selected){'#105A47'}else{'#283F37'};$ui['OfficeCard'+$name].BorderBrush=if($selected){'#19715B'}else{'#CAD8D1'}}
  $ui.OfficeCount.Text="$officeCount de 8"
  $ac=@($catalog.checks|Where-Object {$_.group -eq 'Apps' -and $ui[$_.control].IsChecked}).Count
  $dc=@($catalog.checks|Where-Object {$_.group -eq 'Debloat' -and $ui[$_.control].IsChecked}).Count
  $ui.AppCount.Text="$ac de 20";$ui.DebloatCount.Text="$dc de 23"
- foreach($t in $catalog.themes){$ui['Theme'+$t].Background=if($state.Theme -eq $t){'#234C82'}else{'Transparent'}}
+ foreach($t in $catalog.themes){$ui['Theme'+$t].Background=if($state.Theme -eq $t){'#BCE4D5'}else{'Transparent'}}
 }
 function Get-PreparedSelection {
  Read-Selection
  $ids=New-Object 'System.Collections.Generic.List[string]';$pending=New-Object 'System.Collections.Generic.List[string]'
  foreach($c in $catalog.checks){if($state.Checks[$c.control]){if($c.action){$ids.Add([string]$c.action)}else{$pending.Add([string]$c.label)}}}
- foreach($n in @('Word','Excel','PowerPoint','Outlook','Access','Visio','Publisher','OneNote')){if($state.Checks['Office'+$n]){$pending.Add('Office · '+$n)}}
- if($state.Compression){$pending.Add('Compresión de Windows')}
- foreach($g in @('Migration','Gpu','Disk','Mode')){if($state.Cards[$g]){$label=switch($g){'Migration'{'Migración'}'Gpu'{'Ajustes GPU'}'Disk'{'Ajustes de almacenamiento'}'Mode'{'Modo'}};$pending.Add($label+' · '+$state.Cards[$g])}}
- if($state.CustomIncluded){$pending.Add('Personalización · '+$(if($state.Theme){$state.Theme}else{'A medida'}));foreach($p in $state.Combos.GetEnumerator()){$label=switch($p.Key){'Icons'{'Iconos'}'StartMenu'{'Menú de Inicio'}'Dock'{'RocketDock'}default{$p.Key}};$pending.Add($label+' · '+$p.Value)};if($state.MenuTranslucent){$pending.Add('Menú traslúcido')};if($state.ExplorerTranslucent){$pending.Add('Explorer traslúcido')}}
- [pscustomobject]@{Request=[pscustomobject]@{Schema=1;Ids=@($ids);DriverFolder='';SxsFolder=''};Pending=@($pending);DevicePreference=$state.Cards['Device']}
+  $officeApps=@(foreach($n in @('Word','Excel','PowerPoint','Outlook','Access','Visio','Publisher','OneNote')){if($state.Checks['Office'+$n]){$n}})
+ if($officeApps.Count){$ids.Add('office.install')}
+ if($state.Compression){$ids.Add('system.compact')}
+ if($state.Cards['Disk']){$ids.Add('disk.optimize')}
+ $modeActions=switch($state.Cards['Mode']){
+  'Seguro'{@('explorer.extensions','power.balanced')}
+  'Medio'{@('explorer.extensions','power.balanced','visual.transparency','privacy.suggestions')}
+  'Extremo'{@('explorer.extensions','power.balanced','visual.transparency','privacy.suggestions','gaming.capture')}
+  default{@()}
+ }
+ foreach($action in $modeActions){if(!$ids.Contains($action)){$ids.Add($action)}}
+ if($state.Cards['Migration']){$ids.Add('edition.'+$state.Cards['Migration'].ToLower());$pending.Add('El cambio de edición requiere una licencia propia y una ruta admitida por Windows.')}
+ if($state.Cards['Gpu']){$ids.Add('gpu.'+$state.Cards['Gpu'].ToLower())}
+ $desktop=$null
+ if($state.CustomIncluded){
+  $ids.Add('desktop.custom');$desktop=[ordered]@{}
+  foreach($p in $state.Combos.GetEnumerator()){$desktop[$p.Key]=$p.Value}
+  $desktop.MenuTranslucent=[bool]$state.MenuTranslucent;$desktop.ExplorerTranslucent=[bool]$state.ExplorerTranslucent
+  $desktop=[pscustomobject]$desktop
+ }
+ if($officeApps.Count){$pending.Add('Office y Visio requieren licencia; Publisher usa la edición independiente 2021.')}
+ [pscustomobject]@{Request=[pscustomobject]@{Schema=1;Ids=@($ids);DriverFolder='';SxsFolder='';OfficeApps=$officeApps;DesktopSettings=$desktop};Pending=@($pending);DevicePreference=$state.Cards['Device']}
 }
 function Show-Review {
  $prepared=Get-PreparedSelection
  $names=@(foreach($id in $prepared.Request.Ids){($script:coreCatalog|Where-Object Id -eq $id).Name})
  $ui.AvailableSummary.Text=if($names.Count){'• '+($names -join "`n`n• ")}else{'No has seleccionado acciones disponibles. Puedes volver a Aplicaciones o Debloatware, o abrir Motor y herramientas.'}
- $ui.PendingSummary.Text=if($prepared.Pending.Count){'• '+($prepared.Pending -join "`n• ")}else{'No has seleccionado funciones pendientes.'}
+ $ui.PendingSummary.Text=if($prepared.Pending.Count){'• '+($prepared.Pending -join "`n• ")}else{'Todas las opciones seleccionadas tienen una acción definida.'}
  $ui.ReviewEngine.IsEnabled=($names.Count -gt 0)
 }
 function Show-Page([int]$Index){
  $script:page=[math]::Max(0,[math]::Min(13,$Index))
  for($i=0;$i -lt $catalog.pages.Count;$i++){$ui['Page'+$catalog.pages[$i]].Visibility=if($i -eq $script:page){'Visible'}else{'Collapsed'}}
+ $section=@(0,0,1,1,1,1,2,2,3,3,3,4,4,4)[$script:page]
+ $ui.StepCounter.Text=('Paso {0} de 14' -f ($script:page+1))
+ foreach($j in 0..4){$ui["Stage$j"].Background=if($j -eq $section){'#295047'}else{'Transparent'}}
  $ui.Back.IsEnabled=($script:page -gt 0)
  $ui.HardwareFooter.Visibility=if($script:page -ge 12){'Collapsed'}else{'Visible'}
  if($script:page -eq 11){Show-Review}
- $ui.Status.Text=if($script:page -eq 12){'VISTA PREVIA DEL PROCESO · sin ejecución ni progreso simulado'}else{'Vista previa · las selecciones no aplican cambios'}
+ $ui.Status.Text=if($script:page -eq 12){'VISTA PREVIA DEL PROCESO · sin ejecución ni progreso simulado'}else{'Selecciona tus opciones · al finalizar, revisa y aplica el plan'}
 }
 function Set-Combo([string]$Name,[string]$Value){foreach($item in $ui[$Name].Items){if([string]$item.Content -eq $Value){$ui[$Name].SelectedItem=$item;return}}}
 function Update-Preview {
  if($script:loading){return}
  $wall=[string]$ui.Wallpaper.SelectedItem.Content
- $file='custom.png';$rect='0.45572917,0.28055556,0.38020833,0.37870370'
- if($wall -eq 'Wallpaper Neon'){$file='desktop-neon.png';$rect='0,0,1,1'}
- if($wall -eq 'Wallpaper Ice'){$file='desktop-ice.png';$rect='0.453125,0.32407407,0.40520833,0.30462963'}
+ $folder=Join-Path $script:dataRoot 'previews';[IO.Directory]::CreateDirectory($folder)|Out-Null
+ $path=Join-Path $folder (($wall -replace '[^a-zA-Z0-9]','')+'.bmp')
+ if(!(Test-Path -LiteralPath $path)){New-NexoWallpaper $wall $path}
  $bitmap=New-Object Windows.Media.Imaging.BitmapImage
- $bitmap.BeginInit();$bitmap.UriSource=New-Object Uri((Join-Path $PSScriptRoot ('assets\'+$file)),[UriKind]::Absolute);$bitmap.CacheOption='OnLoad';$bitmap.EndInit();$bitmap.Freeze()
- $brush=New-Object Windows.Media.ImageBrush($bitmap);$brush.Viewbox=[Windows.Rect]::Parse($rect);$brush.ViewboxUnits='RelativeToBoundingBox';$brush.Stretch='Fill';$ui.DesktopPreview.Fill=$brush
+ $bitmap.BeginInit();$bitmap.UriSource=New-Object Uri($path,[UriKind]::Absolute);$bitmap.CacheOption='OnLoad';$bitmap.EndInit();$bitmap.Freeze()
+ $brush=New-Object Windows.Media.ImageBrush($bitmap);$brush.Stretch='UniformToFill';$ui.DesktopPreview.Fill=$brush
 }
 function Select-Theme([string]$Name){
  $script:loading=$true
@@ -109,18 +129,9 @@ function Select-Theme([string]$Name){
  }finally{$script:loading=$false}
  Update-Selection;Update-Preview
 }
-function Set-Gauge([string]$Name,$Value){
- if($null -eq $Value){$ui['GaugeValue'+$Name].Text='—';return}
- $v=[math]::Max(0,[math]::Min(100,[double]$Value));$ui['GaugeValue'+$Name].Text=([int]$v).ToString()+'%'
- if($v -eq 0){$ui['Gauge'+$Name].Data=$null;return}
- $angle=2*[math]::PI*[math]::Min($v,99.99)/100
- $x=(33+30*[math]::Sin($angle)).ToString('0.00',[Globalization.CultureInfo]::InvariantCulture);$y=(33-30*[math]::Cos($angle)).ToString('0.00',[Globalization.CultureInfo]::InvariantCulture);$large=if($v -gt 50){1}else{0}
- $ui['Gauge'+$Name].Data=[Windows.Media.Geometry]::Parse("M 33,3 A 30,30 0 $large 1 $x,$y")
-}
 function Show-Inventory {
  $i=$script:inventory
- $ui.CPUText.Text='CPU: '+$i.CPUName;$ui.BoardText.Text='PCB: '+$i.Model;$ui.RAMText.Text='RAM: '+$i.RAMGB+' GB'
- Set-Gauge 'CPU' $i.CPUPercent;Set-Gauge 'RAM' $i.MemoryPercent;Set-Gauge 'Disk' $i.DrivePercent
+ $ui.CPUText.Text='CPU: '+$i.CPUName;$ui.BoardText.Text='Equipo: '+$i.Model;$ui.RAMText.Text='RAM: '+$i.RAMGB+' GB'
  $ui.HardwareFooter.ToolTip='Lectura de hardware al abrir · '+$i.SampleTime+' · no es un monitor en tiempo real'
  $ui.ProcessOS.Text=$i.OS+' · build '+$i.Build;$ui.ProcessBoard.Text=$i.Model;$ui.ProcessProcessor.Text=$i.CPUName;$ui.ProcessMemory.Text=[string]$i.RAMGB+' GB';$ui.ProcessDrive.Text=$env:SystemDrive+' · '+$i.DrivePercent+'% ocupado'
 }
@@ -135,17 +146,37 @@ function Open-Engine([switch]$WithSelection){
  }
  Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $args -WindowStyle Hidden
 }
+function Complete-Selection {
+ if((Get-PreparedSelection).Request.Ids.Count -gt 0){
+  Show-Page 11
+  Open-Engine -WithSelection
+  $ui.Status.Text='Revisa el plan en el motor y confirma para aplicar los cambios.'
+ }else{
+  Save-Selection
+  Show-Page 13
+ }
+}
+$ui.Mode0Card.ToolTip='Perfil propio Seguro: extensiones de archivos y energía equilibrada.'
+$ui.Mode1Card.ToolTip='Perfil propio Medio: Seguro, reducir transparencias y sugerencias.'
+$ui.Mode2Card.ToolTip='Perfil propio Juegos: Medio y desactivar grabación Game DVR.'
+$ui.Mode2.Content='Seleccionar Juegos'
+$ui.Compression.ToolTip='CompactOS comprime archivos de Windows al aplicar el plan.'
+$ui.OfficePublisher.IsEnabled=$true
+$ui.OfficePublisher.ToolTip='Publisher 2021 independiente. Requiere una licencia propia de esa edición.'
 # Buttons use their own tags/names, avoiding captured loop variables.
 foreach($group in $catalog.cards.PSObject.Properties){foreach($card in $group.Value){$ui[$card.control].Add_Click({try{$parts=([string]$this.Tag).Split('|');$state.Cards[$parts[0]]=$parts[1];Update-Selection;Show-Page ($script:page+1)}catch{Notify-Error $_.Exception.Message}})}}
 foreach($c in $catalog.checks){
+ $ui[$c.control].Content=$c.label
  $ui[$c.control].ToolTip=if($c.action){($script:coreCatalog|Where-Object Id -eq $c.action).Detail}else{'Pendiente de implementación. La selección se guarda, pero no se ejecutará.'}
  $ui[$c.control].Add_Click({Update-Selection})
 }
-foreach($n in @('Word','Excel','PowerPoint','Outlook','Access','Visio','Publisher','OneNote')){$ui['Office'+$n].ToolTip='Selección de Office: instalación pendiente de implementación.';$ui['Office'+$n].Add_Click({Update-Selection})}
+foreach($n in @('Word','Excel','PowerPoint','Outlook','Access','Visio','Publisher','OneNote')){$ui['Office'+$n].ToolTip='Microsoft 365 de 64 bits mediante el instalador oficial. Necesita tu licencia. Visio y Publisher 2021 requieren sus licencias correspondientes.';$ui['Office'+$n].Add_Click({Update-Selection})}
 foreach($p in $catalog.combos.PSObject.Properties){$ui[$p.Name].Add_SelectionChanged({if(-not $script:loading){$state.Theme='';Update-Selection;Update-Preview}})}
 foreach($t in $catalog.themes){$ui['Theme'+$t].Tag=$t;$ui['Theme'+$t].Add_Click({Select-Theme ([string]$this.Tag)})}
 $ui.RandomTheme.Add_Click({Select-Theme ($catalog.themes|Get-Random)})
 $ui.ResetTheme.Add_Click({Select-Theme 'BASIC';$state.Theme='';$state.CustomIncluded=$false;Update-Selection})
+$ui.SkipMigration.Add_Click({$state.Cards.Remove('Migration');Update-Selection;Show-Page 3})
+$ui.SkipGpu.Add_Click({$state.Cards.Remove('Gpu');Update-Selection;Show-Page 4})
 $ui.Back.Add_Click({Show-Page ($script:page-1)})
 $ui.Decline.Add_Click({$window.Close()})
 $ui.Accept.Add_Click({Show-Page 1})
@@ -153,24 +184,29 @@ $ui.WelcomeNext.Add_Click({Read-Selection;Show-Page 2})
 $ui.OfficeNext.Add_Click({Update-Selection;Show-Page 7})
 $ui.OfficeSkip.Add_Click({foreach($n in @('Word','Excel','PowerPoint','Outlook','Access','Visio','Publisher','OneNote')){$ui['Office'+$n].IsChecked=$false};Update-Selection;Show-Page 7})
 $ui.AppsNext.Add_Click({Update-Selection;Show-Page 8})
-$ui.OfficeNext.ToolTip='En esta vista guarda la selección y continúa; la instalación de Office está pendiente.'
-$ui.CustomNext.ToolTip='En esta vista guarda las preferencias y continúa; los temas no se instalan.'
+$ui.OfficeNext.ToolTip='Las aplicaciones elegidas se envían al plan final de instalación de Microsoft 365.'
+$ui.CustomNext.ToolTip='Prepara el fondo, iconos y paneles Nexo elegidos para aplicarlos al finalizar.'
 $ui.CustomNext.Add_Click({$state.CustomIncluded=$true;Update-Selection;Show-Page 9})
 $ui.DebloatNext.Add_Click({Update-Selection;Show-Page 11})
 $ui.SaveSelection.Add_Click({try{Save-Selection}catch{Notify-Error $_.Exception.Message}})
 $ui.ReviewEngine.Add_Click({try{Open-Engine -WithSelection}catch{Notify-Error $_.Exception.Message}})
 $ui.OpenEngine.Add_Click({try{Open-Engine}catch{Notify-Error $_.Exception.Message}})
+$ui.OpenDelta.ToolTip='Instala o abre DELTA original. Sus selecciones se realizan en DELTA.'
+$ui.OpenDelta.Add_Click({try{
+ $deltaScript=Join-Path $PSScriptRoot 'Delta.ps1'
+ if(!(Test-Path -LiteralPath $deltaScript)){throw 'Falta el módulo DELTA. Extrae la entrega completa de Nexo.'}
+ Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList ('-NoProfile -STA -ExecutionPolicy Bypass -File "'+$deltaScript+'"') -WindowStyle Hidden
+}catch{Notify-Error $_.Exception.Message}})
 $ui.PreviewProcess.Add_Click({Show-Page 12})
-$ui.ProcessFinish.Add_Click({try{Save-Selection;Show-Page 13}catch{Notify-Error $_.Exception.Message}})
-$ui.ReviewFinish.Add_Click({try{Save-Selection;Show-Page 13}catch{Notify-Error $_.Exception.Message}})
+$ui.ProcessFinish.Add_Click({try{Complete-Selection}catch{Notify-Error $_.Exception.Message}})
+$ui.ReviewFinish.Add_Click({try{Complete-Selection}catch{Notify-Error $_.Exception.Message}})
 $ui.FinishExit.Add_Click({$window.Close()})
-$ui.About.Add_Click({[Windows.MessageBox]::Show('Nexo Assistant 0.3. Interfaz de evaluación basada en las pantallas públicas de DELTA v13. Proyecto independiente. Consulta LEEME.md y REFERENCIAS.md para conocer el alcance, las imágenes de referencia y las acciones implementadas.','Acerca de Nexo','OK','Information')|Out-Null})
-$ui.DateLabel.Text=(Get-Date).ToString('dd MMMM yyyy · h:mm tt',[Globalization.CultureInfo]::GetCultureInfo('es-CO'))
+$ui.About.Add_Click({[Windows.MessageBox]::Show('Nexo Assistant 0.3. Asistente de instalación y personalización de Windows. Consulta LEEME.md para conocer sus funciones.','Acerca de Nexo','OK','Information')|Out-Null})
 function Save-Capture([string]$Path){
  $window.UpdateLayout()
- $bitmap=New-Object Windows.Media.Imaging.RenderTargetBitmap(1920,1080,96,96,[Windows.Media.PixelFormats]::Pbgra32)
- $visual=New-Object Windows.Media.DrawingVisual;$dc=$visual.RenderOpen();$brush=New-Object Windows.Media.VisualBrush($ui.Design)
- $dc.DrawRectangle($brush,$null,(New-Object Windows.Rect(0,0,1920,1080)));$dc.Close();$bitmap.Render($visual)
+ $size=$ui.Design.RenderSize
+ $bitmap=New-Object Windows.Media.Imaging.RenderTargetBitmap([int][math]::Ceiling($size.Width),[int][math]::Ceiling($size.Height),96,96,[Windows.Media.PixelFormats]::Pbgra32)
+ $bitmap.Render($ui.Design)
  $encoder=New-Object Windows.Media.Imaging.PngBitmapEncoder;$encoder.Frames.Add([Windows.Media.Imaging.BitmapFrame]::Create($bitmap));$stream=[IO.File]::Create($Path);try{$encoder.Save($stream)}finally{$stream.Dispose()}
 }
 function Invoke-UiTests {
@@ -187,12 +223,14 @@ function Invoke-UiTests {
  Click $ui.AppsNext;Click $ui.ThemeNEON;Assert-Ui ($ui.Wallpaper.SelectedItem.Content -eq 'Wallpaper Neon' -and $ui.Dock.SelectedItem.Content -eq 'Dock Neon') 'Tema actualiza controles'
  Click $ui.ResetTheme;Assert-Ui ($ui.Rainmeter.SelectedItem.Content -eq 'Ninguno' -and -not $ui.MenuTranslucent.IsChecked) 'Restablecer tema'
  Click $ui.ThemeNEXO;Click $ui.CustomNext;Click $ui.Mode0;$ui.Debloat13.IsChecked=$true;Click $ui.DebloatNext
- $prepared=Get-PreparedSelection;Assert-Ui ($prepared.Request.Ids.Count -eq 2 -and 'app.vlc' -in $prepared.Request.Ids -and 'remove.clipchamp' -in $prepared.Request.Ids) 'Solo acciones implementadas pasan al motor'
- Assert-Ui ('Google Chrome' -in $prepared.Pending -and @($prepared.Pending|Where-Object {$_ -like 'Modo*'}).Count -eq 1) 'Pendientes se explican sin traducirlos a otras acciones'
- Assert-Ui ($ui.ReviewEngine.IsEnabled -and $ui.PendingSummary.Text.Contains('Google Chrome')) 'Resumen separa capacidades'
+ $prepared=Get-PreparedSelection;Assert-Ui ($prepared.Request.Ids.Count -eq 9 -and 'app.vlc' -in $prepared.Request.Ids -and 'remove.clipchamp' -in $prepared.Request.Ids) 'Solo acciones implementadas pasan al motor'
+ Assert-Ui ('app.chrome' -in $prepared.Request.Ids -and 'edition.professional' -in $prepared.Request.Ids -and 'gpu.amd' -in $prepared.Request.Ids -and 'desktop.custom' -in $prepared.Request.Ids) 'Todas las selecciones se conectan a sus acciones'
+ Assert-Ui ($ui.ReviewEngine.IsEnabled -and $ui.AvailableSummary.Text.Contains('Google Chrome')) 'Resumen separa capacidades'
  Save-Selection;$ui.App2_2.IsChecked=$false;$state.Cards.Clear();Restore-Selection
  Assert-Ui ($ui.App2_2.IsChecked -and $state.Cards.Gpu -eq 'AMD') 'Guardar y restaurar selecciones'
- foreach($c in $catalog.checks){$ui[$c.control].IsChecked=$false};Show-Review;Assert-Ui (-not $ui.ReviewEngine.IsEnabled) 'Plan vacío no abre ejecución'
+ foreach($c in $catalog.checks){$ui[$c.control].IsChecked=$false};$state.Cards.Clear();$state.CustomIncluded=$false;$ui.Compression.IsChecked=$false;Show-Review;Assert-Ui (-not $ui.ReviewEngine.IsEnabled) 'Plan vacío no abre ejecución'
+ Click $ui.ReviewFinish
+ Assert-Ui ($script:page -eq 13) 'Finalizar sin acciones guarda y muestra el cierre'
  $ui.App2_2.IsChecked=$true;Update-Selection;Save-Selection;Show-Page 0
 }
 $window.Add_ContentRendered({

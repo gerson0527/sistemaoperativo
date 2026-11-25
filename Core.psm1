@@ -2,8 +2,13 @@
 $ErrorActionPreference = 'Stop'
 $script:Version = '0.3.0'
 
+. (Join-Path $PSScriptRoot 'Extended.ps1')
+. (Join-Path $PSScriptRoot 'Features.ps1')
+
 function Get-NexoCatalog {
     @(
+        Get-NexoExtendedCatalog
+        Get-NexoFeatureCatalog
         [pscustomobject]@{Id='theme.dark';Group='Apariencia';Name='Tema oscuro';Detail='Aplicaciones y sistema en modo oscuro. Puede requerir cerrar sesion.';Kind='Registry';Undo=$true;Keys=@(@('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize','AppsUseLightTheme',0),@('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize','SystemUsesLightTheme',0))}
         [pscustomobject]@{Id='theme.light';Group='Apariencia';Name='Tema claro';Detail='Aplicaciones y sistema en modo claro. Puede requerir cerrar sesion.';Kind='Registry';Undo=$true;Keys=@(@('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize','AppsUseLightTheme',1),@('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize','SystemUsesLightTheme',1))}
         [pscustomobject]@{Id='visual.transparency';Group='Apariencia';Name='Reducir transparencias';Detail='Desactiva transparencias del escritorio para el usuario actual.';Kind='Registry';Undo=$true;Keys=@(@('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize','EnableTransparency',0))}
@@ -93,12 +98,25 @@ function New-NexoPlan($Request,$Inventory) {
         if($pair[0] -in $ids -and $pair[1] -in $ids){throw 'Selecciona un solo tema y un solo plan de energia.'}
     }
     $catalog=@(Get-NexoCatalog); $steps=@()
+    if(@($ids | Where-Object {$_ -like 'edition.*'}).Count -gt 1){throw 'Selecciona una sola edición de Windows.'}
+    $ids=@($ids | Where-Object {$_ -notlike 'edition.*'})+@($ids | Where-Object {$_ -like 'edition.*'})
     foreach($id in $ids) {
         $action=@($catalog | Where-Object Id -eq $id)
         if($action.Count -ne 1){throw "Accion no permitida: $id"}
         $a=$action[0]; $reason=''; $drivers=@()
         if($Inventory.Build -lt 17763 -or -not $Inventory.X64){$reason='Esta version requiere Windows x64, build 17763 o posterior.'}
-        elseif($a.Kind -eq 'Package' -and -not $Inventory.Winget){$reason='WinGet no esta disponible. No se instala automaticamente en LTSC.'}
+        elseif($a.Kind -eq 'Package' -and -not $Inventory.Winget -and $Inventory.Build -lt 17763){$reason='WinGet requiere Windows 10 1809 o posterior.'}
+        elseif($a.Kind -eq 'Desktop') {
+            if($Request.PSObject.Properties.Name -notcontains 'DesktopSettings'){$reason='Selecciona un tema en el asistente.'}
+            else{try{Test-NexoDesktopRequest $Request.DesktopSettings}catch{$reason=$_.Exception.Message}}
+        }
+        elseif($a.Kind -eq 'Office') {
+            if ($Request.PSObject.Properties.Name -notcontains 'OfficeApps') { $reason='Selecciona las aplicaciones de Office desde el asistente.' }
+            else { try { $null=New-NexoOfficeConfiguration @($Request.OfficeApps) } catch { $reason=$_.Exception.Message } }
+            if (Test-Path 'HKLM:\SOFTWARE\Microsoft\Office\ClickToRun\Configuration') { $reason='Office ya está instalado. Usa su instalador para cambiar aplicaciones.' }
+            $existingOffice=@(Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*','HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*' -ErrorAction SilentlyContinue | Where-Object { $_.PSObject.Properties.Name -contains 'DisplayName' -and $_.DisplayName -match '^Microsoft (Office|365|Visio)' })
+            if($existingOffice.Count){$reason='Se detectó una instalación de Office. Revisa su edición y arquitectura antes de continuar.'}
+        }
         elseif($id -eq 'power.performance' -and $Inventory.Laptop -ne $false){$reason='Alto rendimiento reservado a equipos identificados como sobremesa.'}
         elseif($a.Kind -eq 'Driver') { try { $drivers=@(Get-NexoDriverFiles $Request.DriverFolder) } catch { $reason=$_.Exception.Message } }
         elseif($a.Kind -eq 'Feature' -and $Request.SxsFolder -and -not(Test-Path -LiteralPath $Request.SxsFolder -PathType Container)){$reason='La carpeta sources\sxs no existe.'}
@@ -108,11 +126,11 @@ function New-NexoPlan($Request,$Inventory) {
     [pscustomobject]@{Schema=1;Version=$script:Version;Created=(Get-Date).ToString('o');Computer=$Inventory.Computer;UserSid=$Inventory.UserSid;Build=$Inventory.Build;Request=$Request;Steps=$steps}
 }
 
-function Invoke-NexoNative([string]$File,[string[]]$Arguments,[string]$Log) {
+function Invoke-NexoNative([string]$File,[string[]]$Arguments,[string]$Log,[int[]]$SuccessCodes=@(0,3010,1641)) {
     $output=& $File @Arguments 2>&1
     $code=$LASTEXITCODE
     $output | Out-File -LiteralPath $Log -Append -Encoding utf8
-    if($code -notin @(0,3010,1641)){throw "$([IO.Path]::GetFileName($File)) termino con codigo $code. Consulta $Log"}
+    if($code -notin $SuccessCodes){throw "$([IO.Path]::GetFileName($File)) termino con codigo $code. Consulta $Log"}
     return $code
 }
 function Get-NexoRegistryBackup($Action) {
@@ -128,6 +146,7 @@ function Get-NexoRegistryBackup($Action) {
 function Get-NexoBackup($Action) {
     switch($Action.Kind) {
         'Registry' { return @(Get-NexoRegistryBackup $Action) }
+        'Menu' { return @(Get-NexoRegistryBackup $Action) }
         'Power' {
             $active=& "$env:SystemRoot\System32\powercfg.exe" /getactivescheme
             if($LASTEXITCODE -ne 0 -or ($active -join ' ') -notmatch '[a-fA-F0-9]{8}-(?:[a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}'){throw 'No se pudo leer el plan de energia anterior.'}
@@ -165,15 +184,25 @@ function Invoke-NexoAction($Action,$Step,$Request,[string]$Log) {
             if($Request.SxsFolder){$args+=@('/LimitAccess',('/Source:'+$Request.SxsFolder))}
             $code=Invoke-NexoNative "$env:SystemRoot\System32\dism.exe" $args $Log
         }
+        'Compact' { $code=Invoke-NexoNative "$env:SystemRoot\System32\compact.exe" @('/compactos:always') $Log }
+        'Optimize' { $code=Invoke-NexoNative "$env:SystemRoot\System32\defrag.exe" @($env:SystemDrive,'/O','/U') $Log }
+        'Office' { $code=Install-NexoOffice $Request $Log }
+        'Desktop' { $code=Install-NexoDesktop $Request.DesktopSettings $Log }
+        'Menu' { $code=Install-NexoMenu }
+        'GPU' { $code=Update-NexoGpu $Action.Vendor $Log }
+        'Edition' { $code=Invoke-NexoEdition $Action.Target $Log }
         'Package' {
-            $winget=(Get-Command winget.exe -ErrorAction Stop).Source
-            $code=Invoke-NexoNative $winget @('install','--id',$Action.Package,'--exact','--source','winget','--silent','--accept-package-agreements','--accept-source-agreements','--disable-interactivity') $Log
+            $winget=Install-NexoWinget $Log
+            $code=Invoke-NexoNative $winget @('install','--id',$Action.Package,'--exact','--source','winget','--silent','--accept-package-agreements','--accept-source-agreements','--disable-interactivity') $Log @(0,3010,1641,-1978335189)
+            $null=Invoke-NexoNative $winget @('list','--id',$Action.Package,'--exact','--accept-source-agreements','--disable-interactivity') $Log @(0)
+            if($code -eq -1978335189){$code=0}
         }
         'Appx' {
-            $packages=@(Get-AppxPackage -Name $Action.Appx)
+            $packages=@(foreach($name in @($Action.Appx)){Get-AppxPackage -Name $name})
             foreach($p in $packages){Remove-AppxPackage -Package $p.PackageFullName -ErrorAction Stop}
-            if($packages.Count -eq 0){'Ya estaba ausente para este usuario.' | Out-File -LiteralPath $Log -Append -Encoding utf8}
+            if($packages.Count -eq 0){'Ya estaba ausente para este usuario.' | Out-File -LiteralPath $Log -Append -Encoding utf8;$code=10001}
         }
+        default { throw ('Acción sin ejecutor: '+$Action.Kind) }
     }
     return $code
 }
@@ -204,15 +233,20 @@ function Invoke-NexoPlan([string]$PlanPath,[string]$RunFolder) {
             Save-NexoJson $journal $journalPath
             $code=Invoke-NexoAction $a $step $plan.Request (Join-Path $RunFolder ($a.Id+'.log'))
             if($code -in @(3010,1641)){$journal.RestartRequired=$true}
-            $entry.State='Completed'
+            $entry.State=switch($code){10001{'Skipped'}10002{'NeedsInput'}default{'Completed'}}
+            if($code -in @(10001,10002)){
+                $actionLog=Join-Path $RunFolder ($a.Id+'.log')
+                if(Test-Path -LiteralPath $actionLog){$entry.Error=[IO.File]::ReadAllText($actionLog)}
+            }
         }catch{
             $entry.Error=$_.Exception.Message; $entry.State='Failed'; $journal.State='Failed'
             Save-NexoJson $journal $journalPath
-            break
+            # Las acciones son independientes; registra el fallo y sigue con las restantes.
         }
         Save-NexoJson $journal $journalPath
     }
     if($journal.State -eq 'Running'){$journal.State='Completed'}
+    if($journal.State -eq 'Completed' -and @($journal.Entries | Where-Object State -eq 'NeedsInput').Count){$journal.State='NeedsInput'}
     Save-NexoJson $journal $journalPath
     return $journal
 }
@@ -227,7 +261,7 @@ function Restore-NexoRun([string]$JournalPath) {
         if($a.Count -ne 1 -or $a[0].Kind -ne $e.Kind){throw 'Accion desconocida en el registro.'}
         try{
             switch($e.Kind){
-                'Registry' {
+                {$_ -in @('Registry','Menu')} {
                     $allowed=@($a[0].Keys | ForEach-Object {$_[0]+'|'+$_[1]})
                     foreach($b in $e.Backup){
                         if(($b.Path+'|'+$b.Name) -notin $allowed){throw 'Clave de restauracion no permitida.'}

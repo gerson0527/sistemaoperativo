@@ -4,7 +4,7 @@ Add-Type -AssemblyName PresentationFramework,PresentationCore,WindowsBase,System
 Import-Module (Join-Path $PSScriptRoot 'Core.psm1') -Force
 $script:dataRoot=Join-Path $env:LOCALAPPDATA 'NexoAssistant'
 [IO.Directory]::CreateDirectory($script:dataRoot)|Out-Null
-$script:inventory=$null;$script:plan=$null;$script:busy=$false;$script:job=$null;$script:runFolder='';$script:checks=@{};$script:selectedProfile='Conservador';$script:page=0
+$script:desktopSettings=$null;$script:officeApps=@();$script:inventory=$null;$script:plan=$null;$script:busy=$false;$script:job=$null;$script:runFolder='';$script:checks=@{};$script:selectedProfile='Conservador';$script:page=0
 [xml]$xaml=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'Engine.xaml') -Raw -Encoding UTF8
 $script:window=[Windows.Markup.XamlReader]::Load((New-Object Xml.XmlNodeReader $xaml))
 $window.Height=[math]::Min(820,[Windows.SystemParameters]::WorkArea.Height-32)
@@ -12,7 +12,7 @@ $window.Width=[math]::Min(1160,[Windows.SystemParameters]::WorkArea.Width-32)
 $ns=New-Object Xml.XmlNamespaceManager($xaml.NameTable);$ns.AddNamespace('x','http://schemas.microsoft.com/winfx/2006/xaml')
 $script:ui=@{};foreach($node in $xaml.SelectNodes('//*[@x:Name]',$ns)){$name=$node.GetAttribute('Name','http://schemas.microsoft.com/winfx/2006/xaml');$ui[$name]=$window.FindName($name)}
 $script:titles=@('Bienvenido a Nexo','Modo de configuración','Software y bibliotecas','Personalización','Conectividad y controladores','Ajustes del sistema','Revisa tu selección','Resultado e historial')
-$script:subtitles=@('Prepara Windows a tu gusto en un solo recorrido.','Selecciona un punto de partida. Podrás ajustar cada opción antes de aplicar.','Marca únicamente los componentes que necesitas. Los programas usan WinGet e Internet.','Elige el aspecto de Windows. Las vistas son orientativas; no incluyen fondos ni iconos.','Prepara Wi-Fi o instala paquetes locales compatibles de Wi-Fi y Ethernet.','Elige preferencias, energía y aplicaciones que quieres retirar para tu usuario.','Comprueba los cambios y su posibilidad de restauración antes de continuar.','Consulta lo que se aplicó y recupera los ajustes que tienen una copia guardada.')
+$script:subtitles=@('Prepara Windows a tu gusto en un solo recorrido.','Selecciona un punto de partida. Podrás ajustar cada opción antes de aplicar.','Marca únicamente los componentes que necesitas. Los programas usan WinGet e Internet.','Los temas propios Nexo incluyen fondos, iconos y paneles seleccionados desde el asistente.','Prepara Wi-Fi o instala paquetes locales compatibles de Wi-Fi y Ethernet.','Elige preferencias, energía y aplicaciones que quieres retirar para tu usuario.','Comprueba los cambios y su posibilidad de restauración antes de continuar.','Consulta lo que se aplicó y recupera los ajustes que tienen una copia guardada.')
 function Show-Error($Message){
  if($SmokeTest){$script:smokeError=[string]$Message;$window.Close();return}
  [Windows.MessageBox]::Show([string]$Message,'Nexo Assistant','OK','Warning')|Out-Null
@@ -106,7 +106,7 @@ function Build-Plan {
  if(-not $script:inventory){throw 'Primero espera al análisis del equipo.'}
  $ids=@(Get-NexoCatalog|Where-Object {$script:checks[$_.Id].IsChecked}|ForEach-Object Id)
  if($ids.Count -eq 0){throw 'Selecciona al menos una opción antes de revisar.'}
- $req=[pscustomobject]@{Schema=1;Ids=$ids;DriverFolder=$ui.DriverFolder.Text.Trim();SxsFolder=$ui.SxsFolder.Text.Trim()}
+ $req=[pscustomobject]@{Schema=1;Ids=$ids;DriverFolder=$ui.DriverFolder.Text.Trim();SxsFolder=$ui.SxsFolder.Text.Trim();OfficeApps=$script:officeApps;DesktopSettings=$script:desktopSettings}
  $script:plan=New-NexoPlan $req $script:inventory
  $script:planPath=Join-Path $script:dataRoot ('plan-'+[guid]::NewGuid().ToString('N')+'.json');Save-NexoJson $script:plan $script:planPath
  $ui.PlanCards.Children.Clear()
@@ -121,6 +121,8 @@ function Build-Plan {
 function Import-WizardSelection {
  if(-not $SelectionPath){return}
  $request=Read-NexoJson $SelectionPath
+ if($request.PSObject.Properties.Name -contains 'OfficeApps'){$script:officeApps=@($request.OfficeApps)}
+ if($request.PSObject.Properties.Name -contains 'DesktopSettings'){$script:desktopSettings=$request.DesktopSettings}
  $validated=New-NexoPlan $request $script:inventory
  foreach($c in $script:checks.Values){$c.IsChecked=$false}
  foreach($id in $request.Ids){$script:checks[$id].IsChecked=$true}
@@ -137,13 +139,13 @@ function Import-WizardSelection {
 }
 function Show-Journal($Journal){
  $ui.ResultCards.Children.Clear()
- $ui.ResultTitle.Text=switch($Journal.State){'Completed'{'Configuración finalizada'}'Failed'{'La ejecución encontró un problema'}'Stopped'{'Ejecución detenida'}'Running'{'Aplicando selección…'}'RestoredAdjustments'{'Ajustes restaurados'}'RestoreFailed'{'Revisa los errores de restauración'}default{'Resultado de la ejecución'}}
+ $ui.ResultTitle.Text=switch($Journal.State){'Completed'{'Configuración finalizada'}'NeedsInput'{'Hay pasos que necesitan tu intervención'}'Failed'{'La ejecución encontró un problema'}'Stopped'{'Ejecución detenida'}'Running'{'Aplicando selección…'}'RestoredAdjustments'{'Ajustes restaurados'}'RestoreFailed'{'Revisa los errores de restauración'}default{'Resultado de la ejecución'}}
  foreach($e in $Journal.Entries){
-  $status=switch($e.State){'Completed'{'Completado'}'Failed'{'Error'}'Pending'{'En curso'}default{$e.State}}
+  $status=switch($e.State){'Completed'{'Completado'}'Skipped'{'Sin cambios necesarios'}'NeedsInput'{'Requiere tu intervención'}'Failed'{'Error'}'Pending'{'En curso'}default{$e.State}}
   if($e.UndoState){$status+=' · Restauración: '+$e.UndoState}
   $detail=$e.Error;if($e.UndoError){$detail+=' '+$e.UndoError}
   if(-not $detail){$detail=if($e.Reversible){'Copia del ajuste disponible en esta ejecución.'}else{'Esta acción no tiene restauración automática.'}}
-  $color=if($e.State -eq 'Failed' -or $e.UndoState -eq 'Failed'){'#FFB98D'}else{'#54D2AE'}
+  $color=if($e.State -in @('Failed','NeedsInput') -or $e.UndoState -eq 'Failed'){'#FFB98D'}else{'#54D2AE'}
   Add-InfoCard $ui.ResultCards $e.Name $detail $status $color
  }
  if($Journal.RestartRequired){Add-InfoCard $ui.ResultCards 'Reinicio pendiente' 'Guarda tu trabajo y reinicia Windows cuando lo decidas.' 'No se reinicia automáticamente' '#FFCD7F'}
@@ -159,7 +161,7 @@ foreach($a in Get-NexoCatalog){
  $short=switch($a.Id){'app.7zip'{'Compresión de archivos'}'app.firefox'{'Navegador web'}'app.vlc'{'Reproductor multimedia'}'app.vcredist'{'Bibliotecas para aplicaciones x64'}'app.dotnet8'{'Runtime de escritorio'}'runtime.netfx3'{'Componente opcional de Windows'}'network.wlan'{'Inicio automático del servicio WLAN'}'network.drivers'{'La carpeta debe contener INF, CAT y SYS'}'visual.transparency'{''}default{$a.Detail}}
  if($short){Add-Text $s $short 11}
  $check.Content=$s;$script:checks[$a.Id]=$check
- $target=switch($a.Group){'Programas'{'ProgramsChoices'}'Bibliotecas'{'RuntimeChoices'}'Ajustes'{'SettingsChoices'}'Energia'{'PowerChoices'}'Aplicaciones opcionales'{'DebloatChoices'}'Red'{if($a.Id -eq 'network.wlan'){'WifiChoices'}else{'DriverChoices'}}'Apariencia'{if($a.Id -eq 'visual.transparency'){'VisualChoices'}else{''}}}
+ $target=switch($a.Group){'Programas'{'ProgramsChoices'}'Bibliotecas'{'RuntimeChoices'}'Ajustes'{'SettingsChoices'}'Energia'{'PowerChoices'}'Aplicaciones opcionales'{'DebloatChoices'}'Red'{if($a.Id -eq 'network.wlan'){'WifiChoices'}else{'DriverChoices'}}'Apariencia'{if($a.Id -in @('visual.transparency','desktop.custom')){'VisualChoices'}else{''}}}
  if($target){$ui[$target].Children.Add($check)|Out-Null}
  $check.Add_Click({
   if($this.IsChecked){$other=switch($this.Tag){'power.balanced'{'power.performance'}'power.performance'{'power.balanced'}default{''}};if($other){$script:checks[$other].IsChecked=$false}}
@@ -207,13 +209,21 @@ $timer.Add_Tick({
  try{
   if(-not $script:job){return}
   if(-not $script:job.HasExited){
-   if($script:runFolder){$jp=Join-Path $script:runFolder 'journal.json';if(Test-Path -LiteralPath $jp){try{$j=Read-NexoJson $jp;$done=@($j.Entries|Where-Object State -eq 'Completed').Count;$ui.Status.Text="Aplicando selección · $done de $(@($script:plan.Steps).Count) acciones completadas"}catch{}}}
+   if($script:runFolder){$jp=Join-Path $script:runFolder 'journal.json';if(Test-Path -LiteralPath $jp){try{$j=Read-NexoJson $jp;$done=@($j.Entries|Where-Object {$_.State -in @('Completed','Skipped','NeedsInput','Failed')}).Count;$active=@($j.Entries|Where-Object State -eq 'Pending'|Select-Object -Last 1);$current=if($active.Count){$active[0].Name}else{'Preparando'};$ui.Status.Text="$current · $done de $(@($script:plan.Steps).Count) acciones procesadas"}catch{}}}
    return
   }
   $timer.Stop();Set-Busy $false
   if(-not(Test-Path -LiteralPath $script:resultFile)){throw 'El proceso terminó sin informe. Consulta los registros.'}
   $r=Read-NexoJson $script:resultFile;if(-not $r.Ok){throw $r.Error}
-  if($script:jobMode -eq 'Scan'){$script:inventory=$r.Result;Show-Inventory;Import-WizardSelection}else{Refresh-History;Show-Journal $r.Result;Reset-Plan;Show-Page 7;$ui.Status.Text='Operación terminada. Revisa el resultado de cada acción.'}
+  if($script:jobMode -eq 'Scan'){$script:inventory=$r.Result;Show-Inventory;Import-WizardSelection}else{
+   Refresh-History;Show-Journal $r.Result;Reset-Plan;Show-Page 7;$ui.Status.Text='Operación terminada. Revisa el resultado de cada acción.'
+   if($script:jobMode -eq 'Apply' -and @($r.Result.Entries | Where-Object {$_.Id -eq 'desktop.custom' -and $_.State -eq 'Completed'}).Count){
+    foreach($mode in @('Widget','Menu','Dock')){
+     $link=Join-Path ([Environment]::GetFolderPath('Desktop')) ('Nexo '+$mode+'.lnk')
+     if(Test-Path -LiteralPath $link){Start-Process -FilePath $link}
+    }
+   }
+  }
   $script:job.Dispose();$script:job=$null
  }catch{$timer.Stop();Set-Busy $false;$ui.Status.Text='No se completó la operación.';Show-Error $_.Exception.Message}
 })
@@ -236,7 +246,7 @@ function Invoke-UiTests {
  Click $ui.Back;Assert-Ui ($script:page -eq 5) 'Anterior conserva navegacion'
  $ui.SxsFolder.Text='cambio-de-prueba';Assert-Ui ($null -eq $script:plan -and -not $ui.Apply.IsEnabled) 'Cambio invalida plan y consentimiento';$ui.SxsFolder.Text=''
  $original=$script:inventory.Winget;$script:inventory.Winget=$false;$script:checks['app.vlc'].IsChecked=$true;Build-Plan;$ui.Consent.IsChecked=$true;Update-Navigation
- Assert-Ui (-not $ui.Apply.IsEnabled) 'Bloqueo de WinGet impide aplicar';$script:inventory.Winget=$original;$script:checks['app.vlc'].IsChecked=$false
+ Assert-Ui ($ui.Apply.IsEnabled) 'WinGet ausente permite preparar el gestor al aplicar';$script:inventory.Winget=$original;$script:checks['app.vlc'].IsChecked=$false
  foreach($p in 0..7){Show-Page $p;Assert-Ui ($ui.Tabs.SelectedIndex -eq $p -and $ui.PageTitle.Text -eq $script:titles[$p]) "Pantalla $p"}
  Select-Profile 'Conservador';Show-Page 0
 }

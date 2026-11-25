@@ -22,3 +22,7 @@
 .vs/
 .vscode/
 __pycache__/
+
+# Paquetes comerciales aportados por el usuario; no publicar en Git.
+/private-payloads/
+/dist/

@@ -1,61 +1,566 @@
-<?xml version='1.0' encoding='utf-8'?>
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Nexo Assistant · 0.3 · Vista previa" Width="1536" Height="900" MinWidth="960" MinHeight="600" Background="#081321" WindowStartupLocation="CenterScreen">
-<Window.Resources>
- <LinearGradientBrush x:Key="Blue" StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#5395FF" Offset="0" /><GradientStop Color="#1955E6" Offset="1" /></LinearGradientBrush>
- <Style TargetType="TextBlock"><Setter Property="FontFamily" Value="Segoe UI" /><Setter Property="Foreground" Value="#C4CFE1" /></Style>
- <Style x:Key="BaseButton" TargetType="Button"><Setter Property="Cursor" Value="Hand" /><Setter Property="Foreground" Value="White" /><Setter Property="FontWeight" Value="SemiBold" /><Setter Property="BorderThickness" Value="2" /><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="B" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="11"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="B" Property="Opacity" Value="0.8" /></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="B" Property="BorderBrush" Value="White" /></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="B" Property="Opacity" Value="0.4" /></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style>
- <Style x:Key="Primary" TargetType="Button" BasedOn="{StaticResource BaseButton}"><Setter Property="Background" Value="{StaticResource Blue}" /><Setter Property="BorderBrush" Value="#3474E2" /></Style>
- <Style x:Key="Outline" TargetType="Button" BasedOn="{StaticResource BaseButton}"><Setter Property="Background" Value="Transparent" /></Style>
- <Style x:Key="Link" TargetType="Button" BasedOn="{StaticResource BaseButton}"><Setter Property="Background" Value="Transparent" /><Setter Property="BorderBrush" Value="Transparent" /><Setter Property="Foreground" Value="#91A7CB" /><Setter Property="FontWeight" Value="Normal" /></Style>
- <Style TargetType="CheckBox"><Setter Property="Cursor" Value="Hand" /><Setter Property="VerticalContentAlignment" Value="Center" /><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="CheckBox"><StackPanel Orientation="Horizontal"><Border x:Name="C" Width="23" Height="23" Margin="0,3,14,0" Background="#EFF2F4" CornerRadius="3" BorderBrush="#A3B0C5" BorderThickness="1"><TextBlock x:Name="Tick" Text="✓" Foreground="White" FontSize="18" HorizontalAlignment="Center" Visibility="Hidden" /></Border><ContentPresenter VerticalAlignment="Center" /></StackPanel><ControlTemplate.Triggers><Trigger Property="IsChecked" Value="True"><Setter TargetName="C" Property="Background" Value="#087ABE" /><Setter TargetName="C" Property="BorderBrush" Value="#087ABE" /><Setter TargetName="Tick" Property="Visibility" Value="Visible" /></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="C" Property="BorderBrush" Value="White" /><Setter TargetName="C" Property="BorderThickness" Value="2" /></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style>
- <Style TargetType="ScrollBar"><Setter Property="Width" Value="24" /><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollBar"><Grid Background="#243957"><Track x:Name="PART_Track" Orientation="Vertical" IsDirectionReversed="True" Minimum="{TemplateBinding Minimum}" Maximum="{TemplateBinding Maximum}" Value="{TemplateBinding Value}" ViewportSize="{TemplateBinding ViewportSize}"><Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False" /></Track.DecreaseRepeatButton><Track.Thumb><Thumb><Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="#0A98EB" CornerRadius="12" Margin="2,1" /></ControlTemplate></Thumb.Template></Thumb></Track.Thumb><Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False" /></Track.IncreaseRepeatButton></Track></Grid></ControlTemplate></Setter.Value></Setter></Style>
-</Window.Resources>
-<Viewbox Stretch="Uniform"><Canvas x:Name="Design" Width="1920" Height="1080" Background="#081321">
-<Border Canvas.Left="278" Canvas.Top="37" Width="71" Height="71" Background="{StaticResource Blue}" CornerRadius="16" BorderBrush="#286FDD" BorderThickness="1.5" />
-<TextBlock Canvas.Left="278" Canvas.Top="38" Width="71" Height="70" Text="N" FontSize="50" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="365" Canvas.Top="31" Width="170" Text="NEXO" FontSize="42" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="367" Canvas.Top="79" Width="220" Text="A S S I S T A N T" FontSize="20" Foreground="#8293B1" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" />
-<Border Canvas.Left="546" Canvas.Top="50" Width="94" Height="42" Background="{StaticResource Blue}" CornerRadius="22" BorderBrush="#2465D5" BorderThickness="1.5" />
-<TextBlock Canvas.Left="546" Canvas.Top="53" Width="94" Text="v0.3" FontSize="24" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="1280" Canvas.Top="38" Width="315" Text="Nexo Assistant" FontSize="23" Foreground="#5687F0" FontWeight="SemiBold" TextAlignment="Right" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="1605" Canvas.Top="31" Width="40" Height="42" Text="◎" FontSize="36" Foreground="#5687F0" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="1110" Canvas.Top="79" Width="486" x:Name="DateLabel" Text="" FontSize="22" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Right" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="1605" Canvas.Top="78" Width="40" Height="40" Text="▦" FontSize="30" Foreground="#5687F0" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" />
-<Border Canvas.Left="280" Canvas.Top="140" Width="1364" Height="906" Background="#0F1D34" CornerRadius="27" BorderBrush="#1B2B42" BorderThickness="1.5" />
-<Canvas x:Name="PageTerms" Visibility="Collapsed"><Border Canvas.Left="928" Canvas.Top="167" Width="697" Height="737" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="405" Canvas.Top="365" Width="400" Height="360"><Rectangle.Fill><ImageBrush ImageSource="assets/terms.png" Viewbox="0.1953125,0.36759259,0.196875,0.26574074" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><Rectangle Canvas.Left="967" Canvas.Top="196" Width="75" Height="64"><Rectangle.Fill><ImageBrush ImageSource="assets/terms.png" Viewbox="0.50520833,0.24907407,0.03645833,0.0462963" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="1050" Canvas.Top="201" Width="535" Text="Términos y condiciones" FontSize="29" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1050" Canvas.Top="241" Width="525" Text="Nexo · versión de evaluación 0.3" FontSize="22" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><ScrollViewer x:Name="TermsScroll" Canvas.Left="970" Canvas.Top="300" Width="610" Height="395" VerticalScrollBarVisibility="Auto"><TextBlock TextWrapping="Wrap" FontSize="24" LineHeight="34" Foreground="#B8C6DB" Text="Nexo permite recorrer y preparar una configuración de Windows. Esta entrega reproduce la estructura visual del asistente de referencia.&#10;&#10;Seleccionar opciones aquí no aplica cambios al equipo. Al terminar verás qué acciones están disponibles y cuáles siguen pendientes. Las acciones disponibles se abren en el motor de Nexo para su revisión y confirmación.&#10;&#10;Los paquetes de Office, temas, migración y ajustes especializados de hardware todavía no están implementados. Sus controles guardan preferencias de diseño.&#10;&#10;Las imágenes de referencia pertenecen a sus autores y se usan en esta demostración para comparar el aspecto. No son paquetes instalables ni una asociación con DProjects.&#10;&#10;Nexo no incluye licencias de Windows ni de aplicaciones. El código fuente y el alcance de cada acción se encuentran en la documentación adjunta." /></ScrollViewer><TextBlock Canvas.Left="980" Canvas.Top="720" Width="590" Text="Al continuar aceptas recorrer esta versión de evaluación." FontSize="22" Foreground="#DBE5F5" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Decline" Canvas.Left="1085" Canvas.Top="800" Width="165" Height="66" Style="{StaticResource Outline}" Content="Declinar" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /><Button x:Name="Accept" Canvas.Left="1325" Canvas.Top="800" Width="165" Height="66" Style="{StaticResource Primary}" Content="Aceptar" FontSize="22" /></Canvas>
-<Canvas x:Name="PageWelcome" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Bienvenido/a:" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="450" Canvas.Top="247" Width="1020" Text="Nexo te acompaña en la configuración, selección de programas y personalización de Windows. Prepara tus preferencias durante el recorrido y revísalas al terminar." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="460" Canvas.Top="346" Width="1000" Text="Elige en cada etapa las opciones que correspondan a tu equipo. Puedes volver para corregirlas. Esta versión conserva tus selecciones; solo las acciones disponibles podrán enviarse al motor y siempre se revisan antes de aplicarlas." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="520" Canvas.Top="543" Width="880" Height="230" Background="#2C2D32" CornerRadius="16" BorderBrush="#2C2D32" BorderThickness="1.5" /><TextBlock Canvas.Left="550" Canvas.Top="574" Width="105" Height="120" Text="⚠" FontSize="83" Foreground="#FFC454" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="680" Canvas.Top="572" Width="680" Text="IMPORTANTE: la compresión de Windows es opcional. En esta entrega puedes guardar la preferencia, pero su ejecución está pendiente de implementación." FontSize="24" Foreground="#E4B14D" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><CheckBox x:Name="Compression" Canvas.Left="800" Canvas.Top="712" Width="400" Height="34" Content="Activar Compresión" Foreground="#E4B14D" FontSize="23" Tag="pending:Compresión de Windows" /><Button x:Name="WelcomeNext" Canvas.Left="855" Canvas.Top="813" Width="210" Height="66" Style="{StaticResource Primary}" Content="Continuar" FontSize="22" /></Canvas>
-<Canvas x:Name="PageMigration" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Migración" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="440" Canvas.Top="242" Width="1040" Text="Elige la edición de Windows que quieres preparar. Esta selección guarda una preferencia: la migración de edición todavía no está disponible en Nexo." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="362" Canvas.Top="407" Width="368" Height="476" x:Name="Migration0Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="496" Canvas.Top="437" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/migration.png" Viewbox="0.24166667,0.42314815,0.053125,0.0712963" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="380" Canvas.Top="555" Width="332" Text="Professional" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="380" Canvas.Top="594" Width="332" Text="Uso general" FontSize="24" Foreground="#5598FF" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="395" Canvas.Top="649" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="404" Canvas.Top="670" Width="284" Text="Una edición versátil para trabajo, estudio y uso cotidiano." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Migration0" Canvas.Left="428" Canvas.Top="781" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#5598FF" BorderBrush="#5598FF" Tag="Migration|Professional" /><Border Canvas.Left="778" Canvas.Top="407" Width="368" Height="476" x:Name="Migration1Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="912" Canvas.Top="437" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/migration.png" Viewbox="0.47447917,0.42314815,0.053125,0.0712963" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="796" Canvas.Top="555" Width="332" Text="Enterprise" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="796" Canvas.Top="594" Width="332" Text="Empresas" FontSize="24" Foreground="#46CEB3" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="811" Canvas.Top="649" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="820" Canvas.Top="670" Width="284" Text="Funciones orientadas a administración y entornos de empresa." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Migration1" Canvas.Left="844" Canvas.Top="781" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#46CEB3" BorderBrush="#46CEB3" Tag="Migration|Enterprise" /><Border Canvas.Left="1196" Canvas.Top="407" Width="368" Height="476" x:Name="Migration2Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="1330" Canvas.Top="437" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/migration.png" Viewbox="0.70677083,0.42314815,0.053125,0.0712963" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="1214" Canvas.Top="555" Width="332" Text="Workstation" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1214" Canvas.Top="594" Width="332" Text="Tareas avanzadas" FontSize="24" Foreground="#A883F7" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="1229" Canvas.Top="649" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="1238" Canvas.Top="670" Width="284" Text="Opciones orientadas a estaciones de trabajo." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Migration2" Canvas.Left="1262" Canvas.Top="781" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#A883F7" BorderBrush="#A883F7" Tag="Migration|Workstation" /></Canvas>
-<Canvas x:Name="PageGpu" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Gráficos" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="440" Canvas.Top="242" Width="1040" Text="Selecciona la marca de gráficos de tu equipo: Intel, NVIDIA o AMD. La selección se conserva para preparar el perfil; esta versión no aplica ajustes de GPU ni instala sus controladores." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="362" Canvas.Top="407" Width="368" Height="476" x:Name="Gpu0Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="496" Canvas.Top="437" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/gpu.png" Viewbox="0.25833333,0.40462963,0.05,0.08888889" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="380" Canvas.Top="555" Width="332" Text="INTEL" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="380" Canvas.Top="594" Width="332" Text="GPU" FontSize="24" Foreground="#168DD7" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="395" Canvas.Top="649" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="404" Canvas.Top="670" Width="284" Text="Preparación de las preferencias de gráficos para este fabricante." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Gpu0" Canvas.Left="428" Canvas.Top="781" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#168DD7" BorderBrush="#168DD7" Tag="Gpu|INTEL" /><Border Canvas.Left="778" Canvas.Top="407" Width="368" Height="476" x:Name="Gpu1Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="912" Canvas.Top="437" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/gpu.png" Viewbox="0.47604167,0.40462963,0.05,0.08888889" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="796" Canvas.Top="555" Width="332" Text="NVIDIA" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="796" Canvas.Top="594" Width="332" Text="GPU" FontSize="24" Foreground="#4DCE9B" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="811" Canvas.Top="649" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="820" Canvas.Top="670" Width="284" Text="Preparación de las preferencias de gráficos para este fabricante." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Gpu1" Canvas.Left="844" Canvas.Top="781" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#4DCE9B" BorderBrush="#4DCE9B" Tag="Gpu|NVIDIA" /><Border Canvas.Left="1196" Canvas.Top="407" Width="368" Height="476" x:Name="Gpu2Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="1330" Canvas.Top="437" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/gpu.png" Viewbox="0.69427083,0.40462963,0.05,0.08888889" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="1214" Canvas.Top="555" Width="332" Text="AMD" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1214" Canvas.Top="594" Width="332" Text="GPU" FontSize="24" Foreground="#C13085" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="1229" Canvas.Top="649" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="1238" Canvas.Top="670" Width="284" Text="Preparación de las preferencias de gráficos para este fabricante." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Gpu2" Canvas.Left="1262" Canvas.Top="781" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#C13085" BorderBrush="#C13085" Tag="Gpu|AMD" /></Canvas>
-<Canvas x:Name="PageDisk" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Almacenamiento" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="440" Canvas.Top="242" Width="1040" Text="Selecciona el tipo de unidad donde está Windows. Los perfiles específicos de almacenamiento se mantienen como preferencias pendientes de implementación." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="570" Canvas.Top="407" Width="368" Height="476" x:Name="Disk0Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="704" Canvas.Top="437" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/disks.png" Viewbox="0.3671875,0.40462963,0.05,0.08888889" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="588" Canvas.Top="555" Width="332" Text="SSD / M.2" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="588" Canvas.Top="594" Width="332" Text="Unidad de estado sólido" FontSize="24" Foreground="#1F9ADE" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="603" Canvas.Top="649" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="612" Canvas.Top="670" Width="284" Text="Perfil previsto para almacenamiento de estado sólido." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Disk0" Canvas.Left="636" Canvas.Top="781" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#1F9ADE" BorderBrush="#1F9ADE" Tag="Disk|SSD / M.2" /><Border Canvas.Left="987" Canvas.Top="407" Width="368" Height="476" x:Name="Disk1Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="1121" Canvas.Top="437" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/disks.png" Viewbox="0.58489583,0.40462963,0.05,0.08888889" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="1005" Canvas.Top="555" Width="332" Text="HDD" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1005" Canvas.Top="594" Width="332" Text="Disco mecánico" FontSize="24" Foreground="#D19B3F" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="1020" Canvas.Top="649" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="1029" Canvas.Top="670" Width="284" Text="Perfil previsto para almacenamiento en discos mecánicos." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Disk1" Canvas.Left="1053" Canvas.Top="781" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#D19B3F" BorderBrush="#D19B3F" Tag="Disk|HDD" /></Canvas>
-<Canvas x:Name="PageDevice" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Tipo de equipo" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="440" Canvas.Top="242" Width="1040" Text="Indica si utilizas un equipo de escritorio o un portátil. Nexo también consulta el hardware real: esta selección no sustituye las comprobaciones del motor." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="570" Canvas.Top="407" Width="368" Height="476" x:Name="Device0Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Border Canvas.Left="704" Canvas.Top="437" Width="96" Height="96" Background="#152A47" BorderBrush="#558FF5" BorderThickness="1.5" CornerRadius="14" /><Rectangle Canvas.Left="720" Canvas.Top="460" Width="64" Height="56"><Rectangle.Fill><ImageBrush ImageSource="assets/device.png" Viewbox="0.3671875,0.43703703703703706,0.034375,0.04259259259259259" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="588" Canvas.Top="555" Width="332" Text="Desktop" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="588" Canvas.Top="594" Width="332" Text="Escritorio" FontSize="24" Foreground="#558FF5" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="603" Canvas.Top="649" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="612" Canvas.Top="670" Width="284" Text="Preferencias para un equipo de escritorio conectado a la corriente." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Device0" Canvas.Left="636" Canvas.Top="781" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#558FF5" BorderBrush="#558FF5" Tag="Device|Desktop" /><Border Canvas.Left="987" Canvas.Top="407" Width="368" Height="476" x:Name="Device1Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Border Canvas.Left="1121" Canvas.Top="437" Width="96" Height="96" Background="#152A47" BorderBrush="#558FF5" BorderThickness="1.5" CornerRadius="14" /><Rectangle Canvas.Left="1137" Canvas.Top="460" Width="64" Height="56"><Rectangle.Fill><ImageBrush ImageSource="assets/device.png" Viewbox="0.6005208333333333,0.4388888888888889,0.035416666666666666,0.040740740740740744" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="1005" Canvas.Top="555" Width="332" Text="Laptop" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1005" Canvas.Top="594" Width="332" Text="Portátil" FontSize="24" Foreground="#558FF5" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="1020" Canvas.Top="649" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="1029" Canvas.Top="670" Width="284" Text="Preferencias para equipos portátiles y uso con batería." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Device1" Canvas.Left="1053" Canvas.Top="781" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#558FF5" BorderBrush="#558FF5" Tag="Device|Laptop" /></Canvas>
-<Canvas x:Name="PageOffice" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Microsoft Office" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="440" Canvas.Top="242" Width="1040" Text="Selecciona las aplicaciones que necesitas. La elección se guarda; los instaladores y las licencias de Office no están incluidos en esta versión." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="305" Canvas.Top="340" Width="227" Height="211" x:Name="OfficeCardWord" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="376" Canvas.Top="370" Width="83" Height="76"><Rectangle.Fill><ImageBrush ImageSource="assets/office.png" Viewbox="0.17552083,0.37685185,0.04583333,0.05648148" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><CheckBox x:Name="OfficeWord" Canvas.Left="482" Canvas.Top="358" Width="32" Height="34" Content="" Foreground="#C3CDDF" FontSize="23" Tag="office:Word" /><TextBlock Canvas.Left="315" Canvas.Top="464" Width="207" Text="Word" FontSize="23" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="315" Canvas.Top="500" Width="207" Text="Procesador de texto" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="552" Canvas.Top="340" Width="227" Height="211" x:Name="OfficeCardExcel" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="623" Canvas.Top="370" Width="83" Height="76"><Rectangle.Fill><ImageBrush ImageSource="assets/office.png" Viewbox="0.3125,0.37685185,0.04583333,0.05648148" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><CheckBox x:Name="OfficeExcel" Canvas.Left="729" Canvas.Top="358" Width="32" Height="34" Content="" Foreground="#C3CDDF" FontSize="23" Tag="office:Excel" /><TextBlock Canvas.Left="562" Canvas.Top="464" Width="207" Text="Excel" FontSize="23" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="562" Canvas.Top="500" Width="207" Text="Hojas de cálculo" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="799" Canvas.Top="340" Width="227" Height="211" x:Name="OfficeCardPowerPoint" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="870" Canvas.Top="370" Width="83" Height="76"><Rectangle.Fill><ImageBrush ImageSource="assets/office.png" Viewbox="0.44947917,0.37685185,0.04583333,0.05648148" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><CheckBox x:Name="OfficePowerPoint" Canvas.Left="976" Canvas.Top="358" Width="32" Height="34" Content="" Foreground="#C3CDDF" FontSize="23" Tag="office:PowerPoint" /><TextBlock Canvas.Left="809" Canvas.Top="464" Width="207" Text="PowerPoint" FontSize="23" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="809" Canvas.Top="500" Width="207" Text="Presentaciones" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="1046" Canvas.Top="340" Width="227" Height="211" x:Name="OfficeCardOutlook" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="1117" Canvas.Top="370" Width="83" Height="76"><Rectangle.Fill><ImageBrush ImageSource="assets/office.png" Viewbox="0.58645833,0.37685185,0.04583333,0.05648148" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><CheckBox x:Name="OfficeOutlook" Canvas.Left="1223" Canvas.Top="358" Width="32" Height="34" Content="" Foreground="#C3CDDF" FontSize="23" Tag="office:Outlook" /><TextBlock Canvas.Left="1056" Canvas.Top="464" Width="207" Text="Outlook" FontSize="23" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1056" Canvas.Top="500" Width="207" Text="Correo y calendario" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="305" Canvas.Top="570" Width="227" Height="211" x:Name="OfficeCardAccess" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="376" Canvas.Top="600" Width="83" Height="76"><Rectangle.Fill><ImageBrush ImageSource="assets/office.png" Viewbox="0.17552083,0.5462963,0.04583333,0.05648148" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><CheckBox x:Name="OfficeAccess" Canvas.Left="482" Canvas.Top="588" Width="32" Height="34" Content="" Foreground="#C3CDDF" FontSize="23" Tag="office:Access" /><TextBlock Canvas.Left="315" Canvas.Top="694" Width="207" Text="Access" FontSize="23" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="315" Canvas.Top="730" Width="207" Text="Bases de datos" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="552" Canvas.Top="570" Width="227" Height="211" x:Name="OfficeCardVisio" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="623" Canvas.Top="600" Width="83" Height="76"><Rectangle.Fill><ImageBrush ImageSource="assets/office.png" Viewbox="0.3125,0.5462963,0.04583333,0.05648148" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><CheckBox x:Name="OfficeVisio" Canvas.Left="729" Canvas.Top="588" Width="32" Height="34" Content="" Foreground="#C3CDDF" FontSize="23" Tag="office:Visio" /><TextBlock Canvas.Left="562" Canvas.Top="694" Width="207" Text="Visio" FontSize="23" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="562" Canvas.Top="730" Width="207" Text="Diagramas y gráficos" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="799" Canvas.Top="570" Width="227" Height="211" x:Name="OfficeCardPublisher" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="870" Canvas.Top="600" Width="83" Height="76"><Rectangle.Fill><ImageBrush ImageSource="assets/office.png" Viewbox="0.44947917,0.5462963,0.04583333,0.05648148" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><CheckBox x:Name="OfficePublisher" Canvas.Left="976" Canvas.Top="588" Width="32" Height="34" Content="" Foreground="#C3CDDF" FontSize="23" Tag="office:Publisher" /><TextBlock Canvas.Left="809" Canvas.Top="694" Width="207" Text="Publisher" FontSize="23" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="809" Canvas.Top="730" Width="207" Text="Publicaciones" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="1046" Canvas.Top="570" Width="227" Height="211" x:Name="OfficeCardOneNote" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="1117" Canvas.Top="600" Width="83" Height="76"><Rectangle.Fill><ImageBrush ImageSource="assets/office.png" Viewbox="0.58645833,0.5462963,0.04583333,0.05648148" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><CheckBox x:Name="OfficeOneNote" Canvas.Left="1223" Canvas.Top="588" Width="32" Height="34" Content="" Foreground="#C3CDDF" FontSize="23" Tag="office:OneNote" /><TextBlock Canvas.Left="1056" Canvas.Top="694" Width="207" Text="OneNote" FontSize="23" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1056" Canvas.Top="730" Width="207" Text="Notas digitales" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="1294" Canvas.Top="340" Width="325" Height="441" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="1324" Canvas.Top="365" Width="180" Text="Selección:" FontSize="24" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1510" Canvas.Top="370" Width="90" x:Name="OfficeCount" Text="0 de 8" FontSize="19" Foreground="#5A94FF" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1324" Canvas.Top="415" Width="270" x:Name="OfficeLabelWord" Text="○  Word" FontSize="22" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1324" Canvas.Top="459" Width="270" x:Name="OfficeLabelExcel" Text="○  Excel" FontSize="22" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1324" Canvas.Top="503" Width="270" x:Name="OfficeLabelPowerPoint" Text="○  PowerPoint" FontSize="22" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1324" Canvas.Top="547" Width="270" x:Name="OfficeLabelOutlook" Text="○  Outlook" FontSize="22" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1324" Canvas.Top="591" Width="270" x:Name="OfficeLabelAccess" Text="○  Access" FontSize="22" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1324" Canvas.Top="635" Width="270" x:Name="OfficeLabelVisio" Text="○  Visio" FontSize="22" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1324" Canvas.Top="679" Width="270" x:Name="OfficeLabelPublisher" Text="○  Publisher" FontSize="22" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1324" Canvas.Top="723" Width="270" x:Name="OfficeLabelOneNote" Text="○  OneNote" FontSize="22" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><Button x:Name="OfficeNext" Canvas.Left="770" Canvas.Top="808" Width="200" Height="66" Style="{StaticResource Primary}" Content="Instalar" FontSize="22" /><Button x:Name="OfficeSkip" Canvas.Left="998" Canvas.Top="808" Width="200" Height="66" Style="{StaticResource Outline}" Content="Omitir" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /></Canvas>
-<Canvas x:Name="PageApps" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Aplicaciones" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="440" Canvas.Top="242" Width="1040" Text="Selecciona los programas y componentes que quieres preparar para tu equipo." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="350" Canvas.Top="303" Width="308" Height="290" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="370" Canvas.Top="323" Width="40" Height="44"><Rectangle.Fill><ImageBrush ImageSource="assets/apps.png" Viewbox="0.1734375,0.33981481,0.02239583,0.03240741" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="422" Canvas.Top="327" Width="225" Text="GAMING" FontSize="25" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><CheckBox x:Name="App0_0" Canvas.Left="375" Canvas.Top="384" Width="278" Height="34" Content="Framework" Foreground="#C3CDDF" FontSize="20" Tag="action:runtime.netfx3" /><CheckBox x:Name="App0_1" Canvas.Left="375" Canvas.Top="424" Width="278" Height="34" Content=".NET 8" Foreground="#C3CDDF" FontSize="20" Tag="action:app.dotnet8" /><CheckBox x:Name="App0_2" Canvas.Left="375" Canvas.Top="464" Width="278" Height="34" Content="VCredist" Foreground="#C3CDDF" FontSize="20" Tag="action:app.vcredist" /><CheckBox x:Name="App0_3" Canvas.Left="375" Canvas.Top="504" Width="278" Height="34" Content="DirectX" Foreground="#C3CDDF" FontSize="20" Tag="pending:DirectX" /><CheckBox x:Name="App0_4" Canvas.Left="375" Canvas.Top="544" Width="278" Height="34" Content="MSI Afterburner" Foreground="#C3CDDF" FontSize="20" Tag="pending:MSI Afterburner" /><Border Canvas.Left="350" Canvas.Top="610" Width="308" Height="288" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="370" Canvas.Top="625" Width="40" Height="44" Text="◎" FontSize="33" Foreground="#527BEF" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="422" Canvas.Top="634" Width="225" Text="INTERNET" FontSize="25" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><CheckBox x:Name="App1_0" Canvas.Left="375" Canvas.Top="691" Width="278" Height="34" Content="Free Download Man." Foreground="#C3CDDF" FontSize="20" Tag="pending:Free Download Man." /><CheckBox x:Name="App1_1" Canvas.Left="375" Canvas.Top="731" Width="278" Height="34" Content="Google Chrome" Foreground="#C3CDDF" FontSize="20" Tag="pending:Google Chrome" /><CheckBox x:Name="App1_2" Canvas.Left="375" Canvas.Top="771" Width="278" Height="34" Content="Mozilla Firefox" Foreground="#C3CDDF" FontSize="20" Tag="action:app.firefox" /><CheckBox x:Name="App1_3" Canvas.Left="375" Canvas.Top="811" Width="278" Height="34" Content="Opera" Foreground="#C3CDDF" FontSize="20" Tag="pending:Opera" /><CheckBox x:Name="App1_4" Canvas.Left="375" Canvas.Top="851" Width="278" Height="34" Content="Brave" Foreground="#C3CDDF" FontSize="20" Tag="pending:Brave" /><Border Canvas.Left="675" Canvas.Top="303" Width="308" Height="248" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="695" Canvas.Top="323" Width="40" Height="44"><Rectangle.Fill><ImageBrush ImageSource="assets/apps.png" Viewbox="0.3515625,0.34166667,0.02239583,0.03240741" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="747" Canvas.Top="327" Width="225" Text="MULTIMEDIA" FontSize="25" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><CheckBox x:Name="App2_0" Canvas.Left="700" Canvas.Top="384" Width="278" Height="34" Content="AIMP" Foreground="#C3CDDF" FontSize="20" Tag="pending:AIMP" /><CheckBox x:Name="App2_1" Canvas.Left="700" Canvas.Top="424" Width="278" Height="34" Content="PotPlayer" Foreground="#C3CDDF" FontSize="20" Tag="pending:PotPlayer" /><CheckBox x:Name="App2_2" Canvas.Left="700" Canvas.Top="464" Width="278" Height="34" Content="VLC" Foreground="#C3CDDF" FontSize="20" Tag="action:app.vlc" /><CheckBox x:Name="App2_3" Canvas.Left="700" Canvas.Top="504" Width="278" Height="34" Content="K-Lite Codec" Foreground="#C3CDDF" FontSize="20" Tag="pending:K-Lite Codec" /><Border Canvas.Left="675" Canvas.Top="568" Width="308" Height="330" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="695" Canvas.Top="588" Width="40" Height="44"><Rectangle.Fill><ImageBrush ImageSource="assets/apps.png" Viewbox="0.3515625,0.53333333,0.02239583,0.03240741" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="747" Canvas.Top="592" Width="225" Text="VARIOS" FontSize="25" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><CheckBox x:Name="App3_0" Canvas.Left="700" Canvas.Top="649" Width="278" Height="34" Content="7 Zip" Foreground="#C3CDDF" FontSize="20" Tag="action:app.7zip" /><CheckBox x:Name="App3_1" Canvas.Left="700" Canvas.Top="689" Width="278" Height="34" Content="WinRAR" Foreground="#C3CDDF" FontSize="20" Tag="pending:WinRAR" /><CheckBox x:Name="App3_2" Canvas.Left="700" Canvas.Top="729" Width="278" Height="34" Content="Krenshot" Foreground="#C3CDDF" FontSize="20" Tag="pending:Krenshot" /><CheckBox x:Name="App3_3" Canvas.Left="700" Canvas.Top="769" Width="278" Height="34" Content="Monitor HUB" Foreground="#C3CDDF" FontSize="20" Tag="pending:Monitor HUB" /><CheckBox x:Name="App3_4" Canvas.Left="700" Canvas.Top="809" Width="278" Height="34" Content="MENÚ Extendido" Foreground="#C3CDDF" FontSize="20" Tag="pending:MENÚ Extendido" /><CheckBox x:Name="App3_5" Canvas.Left="700" Canvas.Top="849" Width="278" Height="34" Content="Java v8 Update" Foreground="#C3CDDF" FontSize="20" Tag="pending:Java v8 Update" /><Border Canvas.Left="997" Canvas.Top="303" Width="581" Height="595" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="1042" Canvas.Top="347" Width="58" Height="60"><Rectangle.Fill><ImageBrush ImageSource="assets/apps.png" Viewbox="0.54635417,0.35740741,0.03125,0.04444444" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="1115" Canvas.Top="358" Width="300" Text="Información:" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><Border Canvas.Left="1410" Canvas.Top="360" Width="130" Height="32" Background="#203D74" CornerRadius="18" BorderBrush="#203D74" BorderThickness="1.5" /><TextBlock Canvas.Left="1410" Canvas.Top="361" Width="130" x:Name="AppCount" Text="0 de 20" FontSize="18" Foreground="#5B95FE" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1042" Canvas.Top="458" Width="495" x:Name="AppInfo" Text="Marca las aplicaciones que quieras preparar.&#10;&#10;Al pasar el puntero por una opción verás su disponibilidad. Las opciones pendientes se conservarán en el resumen, sin simular una instalación." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><Button x:Name="AppsNext" Canvas.Left="1204" Canvas.Top="778" Width="210" Height="66" Style="{StaticResource Primary}" Content="Continuar" FontSize="22" /></Canvas>
-<Canvas x:Name="PageCustom" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Personalización" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="440" Canvas.Top="242" Width="1040" Text="Selecciona las opciones de apariencia para preparar tu escritorio." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="315" Canvas.Top="301" Width="527" Height="596" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="340" Canvas.Top="332" Width="400" Text="Personaliza a" FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="340" Canvas.Top="366" Width="400" Text="TU GUSTO:" FontSize="32" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="340" Canvas.Top="430" Width="230" Text="Wallpaper:" FontSize="26" Foreground="#E2EAF8" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><ComboBox x:Name="Wallpaper" Canvas.Left="340" Canvas.Top="469" Width="210" Height="43" SelectedIndex="0" FontSize="21" Foreground="#172238" Background="#FAFBFD" Padding="5,3"><ComboBoxItem Content="Wallpaper Hojas" /><ComboBoxItem Content="Wallpaper Neon" /><ComboBoxItem Content="Wallpaper Ice" /><ComboBoxItem Content="Wallpaper Nexo" /><ComboBoxItem Content="Default" /></ComboBox><TextBlock Canvas.Left="596" Canvas.Top="430" Width="230" Text="Rainmeter:" FontSize="26" Foreground="#E2EAF8" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><ComboBox x:Name="Rainmeter" Canvas.Left="596" Canvas.Top="469" Width="210" Height="43" SelectedIndex="0" FontSize="21" Foreground="#172238" Background="#FAFBFD" Padding="5,3"><ComboBoxItem Content="Skin Neon" /><ComboBoxItem Content="Ninguno" /><ComboBoxItem Content="Skin Canopy" /><ComboBoxItem Content="Skin NeonBasic" /><ComboBoxItem Content="Skin Round" /></ComboBox><TextBlock Canvas.Left="340" Canvas.Top="535" Width="230" Text="Iconos:" FontSize="26" Foreground="#E2EAF8" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><ComboBox x:Name="Icons" Canvas.Left="340" Canvas.Top="574" Width="210" Height="43" SelectedIndex="0" FontSize="21" Foreground="#172238" Background="#FAFBFD" Padding="5,3"><ComboBoxItem Content="Icons Vivid" /><ComboBoxItem Content="Default" /><ComboBoxItem Content="Icons Windows12" /><ComboBoxItem Content="Icons Numix" /></ComboBox><TextBlock Canvas.Left="596" Canvas.Top="535" Width="230" Text="Menú de Inicio:" FontSize="26" Foreground="#E2EAF8" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><ComboBox x:Name="StartMenu" Canvas.Left="596" Canvas.Top="574" Width="210" Height="43" SelectedIndex="0" FontSize="21" Foreground="#172238" Background="#FAFBFD" Padding="5,3"><ComboBoxItem Content="Inicio Launch" /><ComboBoxItem Content="Default" /><ComboBoxItem Content="Inicio Win7" /><ComboBoxItem Content="Inicio Win11" /></ComboBox><TextBlock Canvas.Left="340" Canvas.Top="641" Width="230" Text="RocketDock:" FontSize="26" Foreground="#E2EAF8" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><ComboBox x:Name="Dock" Canvas.Left="340" Canvas.Top="680" Width="210" Height="43" SelectedIndex="0" FontSize="21" Foreground="#172238" Background="#FAFBFD" Padding="5,3"><ComboBoxItem Content="Dock Neon" /><ComboBoxItem Content="Default" /><ComboBoxItem Content="Dock Fluent" /><ComboBoxItem Content="Dock MAC" /></ComboBox><CheckBox x:Name="MenuTranslucent" Canvas.Left="595" Canvas.Top="660" Width="240" Height="34" Content="Menú Traslúcido" Foreground="#C3CDDF" FontSize="20" Tag="pending:Menú traslúcido" /><CheckBox x:Name="ExplorerTranslucent" Canvas.Left="595" Canvas.Top="697" Width="240" Height="34" Content="Explorer Traslúcido" Foreground="#C3CDDF" FontSize="20" Tag="pending:Explorer traslúcido" /><Button x:Name="RandomTheme" Canvas.Left="362" Canvas.Top="796" Width="55" Height="65" Style="{StaticResource Link}" Content="⚄" FontSize="37" /><Button x:Name="ResetTheme" Canvas.Left="477" Canvas.Top="796" Width="55" Height="65" Style="{StaticResource Link}" Content="⟳" FontSize="42" /><Button x:Name="CustomNext" Canvas.Left="646" Canvas.Top="795" Width="164" Height="66" Style="{StaticResource Primary}" Content="Instalar" FontSize="22" /><Rectangle Canvas.Left="874" Canvas.Top="302" Width="732" Height="412" x:Name="DesktopPreview"><Rectangle.Fill><ImageBrush ImageSource="assets/custom.png" Viewbox="0.45572917,0.28055556,0.38020833,0.3787037" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="874" Canvas.Top="717" Width="732" Text="Vista de referencia · los temas aún no se instalan" FontSize="17" Foreground="#869ABB" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="873" Canvas.Top="749" Width="733" Height="145" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="900" Canvas.Top="785" Width="225" Text="O elige uno de los" FontSize="23" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="900" Canvas.Top="818" Width="225" Text="TEMAS:" FontSize="31" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><Button x:Name="ThemeNEXO" Canvas.Left="1130" Canvas.Top="773" Width="138" Height="46" Style="{StaticResource Outline}" Content="NEXO" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /><Button x:Name="ThemeXP" Canvas.Left="1284" Canvas.Top="773" Width="138" Height="46" Style="{StaticResource Outline}" Content="XP" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /><Button x:Name="ThemeSEVEN" Canvas.Left="1438" Canvas.Top="773" Width="138" Height="46" Style="{StaticResource Outline}" Content="SEVEN" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /><Button x:Name="ThemeNEON" Canvas.Left="1130" Canvas.Top="832" Width="138" Height="46" Style="{StaticResource Outline}" Content="NEON" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /><Button x:Name="ThemeBASIC" Canvas.Left="1284" Canvas.Top="832" Width="138" Height="46" Style="{StaticResource Outline}" Content="BASIC" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /><Button x:Name="ThemeMAC" Canvas.Left="1438" Canvas.Top="832" Width="138" Height="46" Style="{StaticResource Outline}" Content="MAC" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /></Canvas>
-<Canvas x:Name="PageMode" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Modos de optimización" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="440" Canvas.Top="242" Width="1040" Text="Selecciona el nivel que deseas evaluar. Estos tres perfiles conservan la distribución de la referencia; todavía no ejecutan sus ajustes en Nexo." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="362" Canvas.Top="333" Width="368" Height="476" x:Name="Mode0Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="496" Canvas.Top="363" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/modes.png" Viewbox="0.2421875,0.36759259,0.05208333,0.07037037" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="380" Canvas.Top="481" Width="332" Text="Seguro" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="380" Canvas.Top="520" Width="332" Text="Modo" FontSize="24" Foreground="#1A9CDD" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="395" Canvas.Top="575" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="404" Canvas.Top="596" Width="284" Text="Preferencia de configuración para priorizar la compatibilidad." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Mode0" Canvas.Left="428" Canvas.Top="707" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#1A9CDD" BorderBrush="#1A9CDD" Tag="Mode|Seguro" /><Border Canvas.Left="778" Canvas.Top="333" Width="368" Height="476" x:Name="Mode1Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="912" Canvas.Top="363" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/modes.png" Viewbox="0.475,0.36759259,0.05208333,0.07037037" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="796" Canvas.Top="481" Width="332" Text="Medio" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="796" Canvas.Top="520" Width="332" Text="Modo" FontSize="24" Foreground="#DEAE41" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="811" Canvas.Top="575" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="820" Canvas.Top="596" Width="284" Text="Preferencia de configuración intermedia para su evaluación." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Mode1" Canvas.Left="844" Canvas.Top="707" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#DEAE41" BorderBrush="#DEAE41" Tag="Mode|Medio" /><Border Canvas.Left="1196" Canvas.Top="333" Width="368" Height="476" x:Name="Mode2Card" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Rectangle Canvas.Left="1330" Canvas.Top="363" Width="96" Height="96"><Rectangle.Fill><ImageBrush ImageSource="assets/modes.png" Viewbox="0.70677083,0.36759259,0.05208333,0.07037037" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="1214" Canvas.Top="481" Width="332" Text="Extremo" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1214" Canvas.Top="520" Width="332" Text="Modo" FontSize="24" Foreground="#C53182" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Rectangle Canvas.Left="1229" Canvas.Top="575" Width="302" Height="1.5" Fill="#2B3A55" /><TextBlock Canvas.Left="1238" Canvas.Top="596" Width="284" Text="Preferencia de configuración avanzada, pendiente de validar." FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="Mode2" Canvas.Left="1262" Canvas.Top="707" Width="232" Height="64" Style="{StaticResource Outline}" Content="Seleccionar" FontSize="22" Foreground="#C53182" BorderBrush="#C53182" Tag="Mode|Extremo" /><TextBlock Canvas.Left="420" Canvas.Top="870" Width="1080" Text="La selección del modo no desactiva servicios ni elimina aplicaciones." FontSize="21" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /></Canvas>
-<Canvas x:Name="PageDebloat" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Debloatware" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="440" Canvas.Top="242" Width="1040" Text="Marca las aplicaciones que quieras retirar de tu usuario. Podrás revisar la disponibilidad y el alcance de cada acción antes de ejecutarla." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="337" Canvas.Top="340" Width="581" Height="547" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Border Canvas.Left="997" Canvas.Top="340" Width="581" Height="547" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><CheckBox x:Name="Debloat0" Canvas.Left="380" Canvas.Top="378" Width="280" Height="34" Content="Noticias" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Noticias" /><CheckBox x:Name="Debloat1" Canvas.Left="380" Canvas.Top="418" Width="280" Height="34" Content="Comentarios" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Comentarios" /><CheckBox x:Name="Debloat2" Canvas.Left="380" Canvas.Top="458" Width="280" Height="34" Content="Primeros Pasos" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Primeros Pasos" /><CheckBox x:Name="Debloat3" Canvas.Left="380" Canvas.Top="498" Width="280" Height="34" Content="Cámara" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Cámara" /><CheckBox x:Name="Debloat4" Canvas.Left="380" Canvas.Top="538" Width="280" Height="34" Content="MS Teams" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar MS Teams" /><CheckBox x:Name="Debloat5" Canvas.Left="380" Canvas.Top="578" Width="280" Height="34" Content="Tu Teléfono" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Tu Teléfono" /><CheckBox x:Name="Debloat6" Canvas.Left="380" Canvas.Top="618" Width="280" Height="34" Content="Obtener Ayuda" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Obtener Ayuda" /><CheckBox x:Name="Debloat7" Canvas.Left="380" Canvas.Top="658" Width="280" Height="34" Content="Contactos" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Contactos" /><CheckBox x:Name="Debloat8" Canvas.Left="380" Canvas.Top="698" Width="280" Height="34" Content="Mapas" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Mapas" /><CheckBox x:Name="Debloat9" Canvas.Left="380" Canvas.Top="738" Width="280" Height="34" Content="Skype" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Skype" /><CheckBox x:Name="Debloat10" Canvas.Left="380" Canvas.Top="778" Width="280" Height="34" Content="OneNote" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar OneNote" /><CheckBox x:Name="Debloat11" Canvas.Left="380" Canvas.Top="818" Width="280" Height="34" Content="Correo y Calendario" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Correo y Calendario" /><CheckBox x:Name="Debloat12" Canvas.Left="670" Canvas.Top="378" Width="280" Height="34" Content="MS Designer" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar MS Designer" /><CheckBox x:Name="Debloat13" Canvas.Left="670" Canvas.Top="418" Width="280" Height="34" Content="Clipchamp" Foreground="#C3CDDF" FontSize="21" Tag="action:remove.clipchamp" /><CheckBox x:Name="Debloat14" Canvas.Left="670" Canvas.Top="458" Width="280" Height="34" Content="Rep. Multimedia" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Rep. Multimedia" /><CheckBox x:Name="Debloat15" Canvas.Left="670" Canvas.Top="498" Width="280" Height="34" Content="Office Hub" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Office Hub" /><CheckBox x:Name="Debloat16" Canvas.Left="670" Canvas.Top="538" Width="280" Height="34" Content="Paint 3D" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Paint 3D" /><CheckBox x:Name="Debloat17" Canvas.Left="670" Canvas.Top="578" Width="280" Height="34" Content="Realidad Mixta" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Realidad Mixta" /><CheckBox x:Name="Debloat18" Canvas.Left="670" Canvas.Top="618" Width="280" Height="34" Content="Clima y Tiempo" Foreground="#C3CDDF" FontSize="21" Tag="action:remove.weather" /><CheckBox x:Name="Debloat19" Canvas.Left="670" Canvas.Top="658" Width="280" Height="34" Content="MS To Do" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar MS To Do" /><CheckBox x:Name="Debloat20" Canvas.Left="670" Canvas.Top="698" Width="280" Height="34" Content="Solitario" Foreground="#C3CDDF" FontSize="21" Tag="action:remove.solitaire" /><CheckBox x:Name="Debloat21" Canvas.Left="670" Canvas.Top="738" Width="280" Height="34" Content="Películas y TV" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Películas y TV" /><CheckBox x:Name="Debloat22" Canvas.Left="670" Canvas.Top="778" Width="280" Height="34" Content="Visor 3D" Foreground="#C3CDDF" FontSize="21" Tag="pending:Quitar Visor 3D" /><Rectangle Canvas.Left="1038" Canvas.Top="383" Width="57" Height="55"><Rectangle.Fill><ImageBrush ImageSource="assets/debloat.png" Viewbox="0.54635417,0.38425926,0.0296875,0.04074074" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="1110" Canvas.Top="386" Width="300" Text="Información:" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><Border Canvas.Left="1410" Canvas.Top="385" Width="130" Height="32" Background="#203D74" CornerRadius="18" BorderBrush="#203D74" BorderThickness="1.5" /><TextBlock Canvas.Left="1410" Canvas.Top="386" Width="130" x:Name="DebloatCount" Text="0 de 23" FontSize="18" Foreground="#5B95FE" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1040" Canvas.Top="469" Width="495" x:Name="DebloatInfo" Text="Selecciona solo las aplicaciones que no utilices.&#10;&#10;Esta entrega puede retirar Clipchamp, Tiempo y Solitario para el usuario actual. El resto se conserva como preferencia pendiente.&#10;&#10;Si no deseas retirar ninguna, pulsa Continuar." FontSize="23" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><Button x:Name="DebloatNext" Canvas.Left="1204" Canvas.Top="778" Width="210" Height="66" Style="{StaticResource Primary}" Content="Continuar" FontSize="22" /></Canvas>
-<Canvas x:Name="PageReview" Visibility="Collapsed"><TextBlock Canvas.Left="350" Canvas.Top="178" Width="1220" Text="Revisa tu selección" FontSize="30" Foreground="#F3F6FC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="440" Canvas.Top="242" Width="1040" Text="La selección está preparada. Comprueba qué acciones se pueden ejecutar y qué funciones siguen pendientes." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="330" Canvas.Top="335" Width="600" Height="430" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Border Canvas.Left="965" Canvas.Top="335" Width="630" Height="430" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="360" Canvas.Top="362" Width="540" Text="Disponibles en el motor" FontSize="28" Foreground="#66D7B2" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="995" Canvas.Top="362" Width="570" Text="Pendientes de implementación" FontSize="28" Foreground="#EDBD69" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><ScrollViewer Canvas.Left="360" Canvas.Top="420" Width="540" Height="310" VerticalScrollBarVisibility="Auto"><TextBlock x:Name="AvailableSummary" FontSize="22" Foreground="#C5D1E5" TextWrapping="Wrap" /></ScrollViewer><ScrollViewer Canvas.Left="995" Canvas.Top="420" Width="570" Height="310" VerticalScrollBarVisibility="Auto"><TextBlock x:Name="PendingSummary" FontSize="22" Foreground="#C5D1E5" TextWrapping="Wrap" /></ScrollViewer><Button x:Name="ReviewEngine" Canvas.Left="345" Canvas.Top="803" Width="375" Height="66" Style="{StaticResource Primary}" Content="Revisar acciones disponibles" FontSize="22" /><Button x:Name="SaveSelection" Canvas.Left="745" Canvas.Top="803" Width="280" Height="66" Style="{StaticResource Primary}" Content="Guardar selección" FontSize="22" /><Button x:Name="PreviewProcess" Canvas.Left="1050" Canvas.Top="803" Width="365" Height="66" Style="{StaticResource Outline}" Content="Ver pantalla de proceso" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /><Button x:Name="ReviewFinish" Canvas.Left="1435" Canvas.Top="803" Width="150" Height="66" Style="{StaticResource Outline}" Content="Finalizar" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /></Canvas>
-<Canvas x:Name="PageProcess" Visibility="Collapsed"><Border Canvas.Left="310" Canvas.Top="175" Width="745" Height="515" Background="#0C1930" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="345" Canvas.Top="272" Width="415" Text="PREPARANDO&#10;TU SISTEMA." FontSize="38" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="345" Canvas.Top="382" Width="415" Text="PERSONALIZA TU&#10;EXPERIENCIA." FontSize="32" Foreground="#2581EE" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="345" Canvas.Top="515" Width="390" Text="Vista previa de la pantalla de proceso.&#10;No se está ejecutando ninguna acción." FontSize="24" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><Border Canvas.Left="780" Canvas.Top="309" Width="205" Height="220" Background="{StaticResource Blue}" CornerRadius="32" BorderBrush="#1899FD" BorderThickness="1.5" /><TextBlock Canvas.Left="780" Canvas.Top="319" Width="205" Height="210" Text="N" FontSize="155" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="320" Canvas.Top="720" Width="170" Height="180" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Border Canvas.Left="508" Canvas.Top="720" Width="170" Height="180" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Border Canvas.Left="696" Canvas.Top="720" Width="170" Height="180" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><Border Canvas.Left="884" Canvas.Top="720" Width="170" Height="180" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="360" Canvas.Top="743" Width="90" Height="80" Text="▣" FontSize="65" Foreground="#278AEC" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="325" Canvas.Top="834" Width="160" Text="OFICINA" FontSize="21" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="325" Canvas.Top="867" Width="160" Text="Productividad" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="548" Canvas.Top="743" Width="90" Height="80" Text="✚" FontSize="65" Foreground="#7449E7" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="513" Canvas.Top="834" Width="160" Text="GAMING" FontSize="21" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="513" Canvas.Top="867" Width="160" Text="Rendimiento" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="736" Canvas.Top="743" Width="90" Height="80" Text="✦" FontSize="65" Foreground="#50CED9" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="701" Canvas.Top="834" Width="160" Text="DISEÑO" FontSize="21" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="701" Canvas.Top="867" Width="160" Text="Creatividad" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="924" Canvas.Top="743" Width="90" Height="80" Text="⌂" FontSize="65" Foreground="#54CD92" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="889" Canvas.Top="834" Width="160" Text="HOGAR" FontSize="21" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="889" Canvas.Top="867" Width="160" Text="Uso diario" FontSize="18" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Border Canvas.Left="1085" Canvas.Top="175" Width="528" Height="725" Background="#0D1A30" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="1115" Canvas.Top="202" Width="470" Text="Información del sistema:" FontSize="28" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><Border Canvas.Left="1110" Canvas.Top="285" Width="475" Height="100" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="1130" Canvas.Top="305" Width="70" Height="65" Text="⊞" FontSize="48" Foreground="#4D9EFA" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1220" Canvas.Top="297" Width="340" Text="Windows" FontSize="24" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1220" Canvas.Top="334" Width="340" x:Name="ProcessOS" Text="Consultando…" FontSize="17" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><Border Canvas.Left="1110" Canvas.Top="401" Width="475" Height="100" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="1130" Canvas.Top="421" Width="70" Height="65" Text="▦" FontSize="48" Foreground="#4D9EFA" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1220" Canvas.Top="413" Width="340" Text="Placa madre" FontSize="24" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1220" Canvas.Top="450" Width="340" x:Name="ProcessBoard" Text="Consultando…" FontSize="17" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><Border Canvas.Left="1110" Canvas.Top="517" Width="475" Height="100" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="1130" Canvas.Top="537" Width="70" Height="65" Text="▣" FontSize="48" Foreground="#4D9EFA" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1220" Canvas.Top="529" Width="340" Text="Procesador" FontSize="24" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1220" Canvas.Top="566" Width="340" x:Name="ProcessProcessor" Text="Consultando…" FontSize="17" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><Border Canvas.Left="1110" Canvas.Top="633" Width="475" Height="100" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="1130" Canvas.Top="653" Width="70" Height="65" Text="▤" FontSize="48" Foreground="#4D9EFA" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1220" Canvas.Top="645" Width="340" Text="Memoria RAM" FontSize="24" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1220" Canvas.Top="682" Width="340" x:Name="ProcessMemory" Text="Consultando…" FontSize="17" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><Border Canvas.Left="1110" Canvas.Top="749" Width="475" Height="100" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="1130" Canvas.Top="769" Width="70" Height="65" Text="▰" FontSize="48" Foreground="#4D9EFA" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="1220" Canvas.Top="761" Width="340" Text="Unidad del sistema" FontSize="24" Foreground="White" FontWeight="SemiBold" TextAlignment="Left" TextWrapping="Wrap" /><TextBlock Canvas.Left="1220" Canvas.Top="798" Width="340" x:Name="ProcessDrive" Text="Consultando…" FontSize="17" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><Border Canvas.Left="306" Canvas.Top="942" Width="1310" Height="70" Background="#15243F" CornerRadius="26" BorderBrush="#1B2C47" BorderThickness="1.5" /><TextBlock Canvas.Left="335" Canvas.Top="959" Width="960" Text="Nexo Assistant · vista previa del proceso · sin cambios en Windows" FontSize="21" Foreground="#85A9EB" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" /><Button x:Name="ProcessFinish" Canvas.Left="1390" Canvas.Top="951" Width="200" Height="50" Style="{StaticResource Primary}" Content="Continuar" FontSize="22" /></Canvas>
-<Canvas x:Name="PageFinish" Visibility="Collapsed"><Rectangle Canvas.Left="765" Canvas.Top="255" Width="394" Height="322"><Rectangle.Fill><ImageBrush ImageSource="assets/finish.png" Viewbox="0.39114583,0.28796296,0.21875,0.23796296" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle><TextBlock Canvas.Left="460" Canvas.Top="626" Width="1000" Text="TU SELECCIÓN ESTÁ LISTA" FontSize="38" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" /><TextBlock Canvas.Left="460" Canvas.Top="721" Width="1000" Text="Tus preferencias están preparadas.&#10;No se ha aplicado ningún cambio desde este recorrido." FontSize="27" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" /><Button x:Name="FinishExit" Canvas.Left="880" Canvas.Top="844" Width="164" Height="66" Style="{StaticResource Primary}" Content="Salir" FontSize="22" /><Button x:Name="About" Canvas.Left="1425" Canvas.Top="948" Width="185" Height="66" Style="{StaticResource Outline}" Content="Acerca de" FontSize="22" Foreground="#5495F5" BorderBrush="#5495F5" /></Canvas>
-<Canvas x:Name="HardwareFooter">
-<Border Canvas.Left="280" Canvas.Top="931" Width="1364" Height="115" Background="#172640" CornerRadius="24" BorderBrush="#21324C" BorderThickness="1.5" />
-<Rectangle Canvas.Left="308" Canvas.Top="956" Width="60" Height="60"><Rectangle.Fill><ImageBrush ImageSource="assets/gpu.png" Viewbox="0.16041667,0.88518519,0.03125,0.05555556" ViewboxUnits="RelativeToBoundingBox" Stretch="Fill" /></Rectangle.Fill></Rectangle>
-<TextBlock Canvas.Left="390" Canvas.Top="949" Width="690" x:Name="CPUText" Text="CPU: consultando…" FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="390" Canvas.Top="977" Width="690" x:Name="BoardText" Text="PCB: consultando…" FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="390" Canvas.Top="1005" Width="690" x:Name="RAMText" Text="RAM: consultando…" FontSize="20" Foreground="#AFBCD2" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" />
-<Ellipse Canvas.Left="1108" Canvas.Top="953" Width="66" Height="66" Stroke="#1A304F" StrokeThickness="6" />
-<Path x:Name="GaugeCPU" Canvas.Left="1108" Canvas.Top="953" Width="66" Height="66" Stroke="#507FC5" StrokeThickness="6" />
-<TextBlock Canvas.Left="1108" Canvas.Top="970" Width="66" x:Name="GaugeValueCPU" Text="—" FontSize="20" Foreground="#F1F6FF" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="1190" Canvas.Top="974" Width="82" Text="CPU" FontSize="23" Foreground="#93A5C1" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" />
-<Ellipse Canvas.Left="1301" Canvas.Top="953" Width="66" Height="66" Stroke="#1A304F" StrokeThickness="6" />
-<Path x:Name="GaugeRAM" Canvas.Left="1301" Canvas.Top="953" Width="66" Height="66" Stroke="#507FC5" StrokeThickness="6" />
-<TextBlock Canvas.Left="1301" Canvas.Top="970" Width="66" x:Name="GaugeValueRAM" Text="—" FontSize="20" Foreground="#F1F6FF" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="1383" Canvas.Top="974" Width="82" Text="RAM" FontSize="23" Foreground="#93A5C1" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" />
-<Ellipse Canvas.Left="1494" Canvas.Top="953" Width="66" Height="66" Stroke="#1A304F" StrokeThickness="6" />
-<Path x:Name="GaugeDisk" Canvas.Left="1494" Canvas.Top="953" Width="66" Height="66" Stroke="#507FC5" StrokeThickness="6" />
-<TextBlock Canvas.Left="1494" Canvas.Top="970" Width="66" x:Name="GaugeValueDisk" Text="—" FontSize="20" Foreground="#F1F6FF" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" />
-<TextBlock Canvas.Left="1576" Canvas.Top="974" Width="82" Text="C:\" FontSize="23" Foreground="#93A5C1" FontWeight="Normal" TextAlignment="Left" TextWrapping="Wrap" />
-</Canvas>
-<Button x:Name="Back" Canvas.Left="282" Canvas.Top="1048" Width="135" Height="30" Style="{StaticResource Link}" Content="‹ Volver" FontSize="17" />
-<TextBlock Canvas.Left="440" Canvas.Top="1054" Width="870" x:Name="Status" Text="Vista previa · las selecciones no aplican cambios" FontSize="16" Foreground="#8094B4" FontWeight="Normal" TextAlignment="Center" TextWrapping="Wrap" />
-<Button x:Name="OpenEngine" Canvas.Left="1390" Canvas.Top="1048" Width="255" Height="30" Style="{StaticResource Link}" Content="Motor y herramientas" FontSize="17" />
-</Canvas></Viewbox></Window>
+<?xml version="1.0" ?>
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Nexo Assistant" Width="1140" Height="770" MinWidth="760" MinHeight="500" Background="#F5F6F3" FontFamily="Segoe UI" FontSize="15" WindowStartupLocation="CenterScreen">
+  <Window.Resources>
+
+
+    <Style TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#263C39"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+
+    <Style TargetType="CheckBox">
+      <Setter Property="Padding" Value="6,1"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="8,9"/>
+      <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+
+    <Style TargetType="Button">
+      <Setter Property="Foreground" Value="#193F38"/>
+      <Setter Property="Background" Value="White"/>
+      <Setter Property="BorderBrush" Value="#C2D1CA"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Padding" Value="16,9"/>
+      <Setter Property="Margin" Value="0,0,8,7"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border Name="Surface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="{TemplateBinding Padding}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Surface" Property="BorderBrush" Value="#178570"/>
+              </Trigger>
+              <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter TargetName="Surface" Property="BorderThickness" Value="2"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value=".48"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+
+  </Window.Resources>
+  <Grid x:Name="Design" Background="#F5F6F3">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="202"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Border Background="#112E2B" Padding="20,25,16,20">
+      <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top">
+          <StackPanel Orientation="Horizontal">
+            <Path Width="28" Height="28" Stretch="Fill" Fill="#A8E8BA" Data="M0,28 L0,0 7,0 20,16 20,0 28,0 28,28 21,28 8,12 8,28 Z"/>
+            <TextBlock Text="Nexo" FontSize="25" FontWeight="SemiBold" Foreground="White" Margin="10,-4,0,0"/>
+          </StackPanel>
+          <Border Height="1" Background="#35514D" Margin="0,22,0,20"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom">
+          <StackPanel x:Name="HardwareFooter" Margin="0,0,0,12">
+            <TextBlock Text="" x:Name="BoardText" FontSize="12" Foreground="#BBD1CB" Margin="0,0,0,3"/>
+            <TextBlock Text="" x:Name="RAMText" FontSize="12" Foreground="#BBD1CB" Margin="0,0,0,3"/>
+            <TextBlock Text="" x:Name="CPUText" FontSize="12" Foreground="#BBD1CB" Margin="0,0,0,3"/>
+          </StackPanel>
+          <Button x:Name="OpenEngine" Content="Herramientas"/>
+          <Button x:Name="OpenDelta" Content="DELTA Pro"/>
+        </StackPanel>
+        <StackPanel>
+          <Border x:Name="Stage0" CornerRadius="5" Padding="10,9" Margin="0,0,0,3">
+            <TextBlock x:Name="StageLabel0" Text="Introducción" Foreground="#D4E3DD"/>
+          </Border>
+          <Border x:Name="Stage1" CornerRadius="5" Padding="10,9" Margin="0,0,0,3">
+            <TextBlock x:Name="StageLabel1" Text="Equipo" Foreground="#D4E3DD"/>
+          </Border>
+          <Border x:Name="Stage2" CornerRadius="5" Padding="10,9" Margin="0,0,0,3">
+            <TextBlock x:Name="StageLabel2" Text="Programas" Foreground="#D4E3DD"/>
+          </Border>
+          <Border x:Name="Stage3" CornerRadius="5" Padding="10,9" Margin="0,0,0,3">
+            <TextBlock x:Name="StageLabel3" Text="Personalización" Foreground="#D4E3DD"/>
+          </Border>
+          <Border x:Name="Stage4" CornerRadius="5" Padding="10,9" Margin="0,0,0,3">
+            <TextBlock x:Name="StageLabel4" Text="Revisión" Foreground="#D4E3DD"/>
+          </Border>
+        </StackPanel>
+      </DockPanel>
+    </Border>
+    <Grid Grid.Column="1" Margin="30,22,30,12">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <DockPanel Margin="0,0,0,16">
+        <TextBlock x:Name="StepCounter" DockPanel.Dock="Right" FontSize="13" Foreground="#536761"/>
+        <TextBlock Text="Configuración de Windows" FontWeight="SemiBold"/>
+      </DockPanel>
+      <Grid Grid.Row="1">
+        <ScrollViewer x:Name="PageTerms" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <Border Height="105" CornerRadius="8" Background="#19483F" ClipToBounds="True" Margin="0,0,0,18">
+  <Grid ClipToBounds="True">
+    <Canvas Width="330" HorizontalAlignment="Right" IsHitTestVisible="False">
+      <Path Data="M 0,125 L 120,-20 L 172,-20 L 52,125 Z" Fill="#245C4F"/>
+      <Path Data="M 92,125 L 212,-20 L 266,-20 L 146,125 Z" Fill="#357962"/>
+      <Path Data="M 186,125 L 306,-20 L 360,-20 L 240,125 Z" Fill="#79B79A"/>
+    </Canvas>
+    <StackPanel Margin="20,0" VerticalAlignment="Center" HorizontalAlignment="Left">
+      <TextBlock Text="Nexo Assistant" Foreground="White" FontSize="26" FontWeight="SemiBold"/>
+      <TextBlock Text="Instalación y personalización" Foreground="#CAE3D4" FontSize="14"/>
+    </StackPanel>
+  </Grid>
+</Border>
+<TextBlock Text="Antes de comenzar" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Elige qué instalar y qué ajustes aplicar en este equipo." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="9" Padding="18" Margin="0,0,0,12">
+              <StackPanel>
+                <TextBlock Text="Cómo se aplican los cambios" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                <TextBlock Text="Al finalizar podrás revisar y confirmar cada acción. Nexo registra el resultado de las instalaciones y los ajustes." Foreground="#485D56" Margin="0,0,0,12"/>
+              </StackPanel>
+            </Border>
+            <Border Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="9" Padding="18" Margin="0,0,0,12">
+              <StackPanel>
+                <TextBlock Text="Qué necesitas" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                <TextBlock Text="Conexión a Internet para las descargas y una licencia válida para Office o para cambiar la edición de Windows. Guarda tu trabajo antes de aplicar el plan." Foreground="#485D56" Margin="0,0,0,12"/>
+              </StackPanel>
+            </Border>
+            <WrapPanel>
+              <Button x:Name="Accept" Content="Aceptar y continuar" Background="#176452" Foreground="White" BorderBrush="#176452"/>
+              <Button x:Name="Decline" Content="Salir"/>
+            </WrapPanel>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageWelcome" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Prepara tu equipo" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Configura el almacenamiento antes de elegir los componentes." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="9" Padding="18" Margin="0,0,0,12">
+              <StackPanel>
+                <TextBlock Text="Espacio en disco" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                <TextBlock Text="CompactOS comprime los archivos de Windows para liberar espacio. La operación puede tardar varios minutos." Foreground="#485D56" Margin="0,0,0,12"/>
+                <CheckBox x:Name="Compression" Content="Incluir compresión de Windows"/>
+              </StackPanel>
+            </Border>
+            <Button x:Name="WelcomeNext" Content="Continuar" Background="#176452" Foreground="White" BorderBrush="#176452" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageMigration" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Edición de Windows" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Elige una edición si tienes su clave o conserva la actual." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border x:Name="Migration0Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Migration0" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Migration|Professional"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="Pro" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Para equipos de uso profesional" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Border x:Name="Migration1Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Migration1" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Migration|Enterprise"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="Enterprise" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Para entornos administrados" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Border x:Name="Migration2Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Migration2" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Migration|Workstation"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="Pro para estaciones de trabajo" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Para estaciones de trabajo compatibles" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Button x:Name="SkipMigration" Content="Omitir este paso" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageGpu" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Controlador gráfico" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Selecciona el fabricante de tu GPU para buscar un controlador compatible." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border x:Name="Gpu0Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Gpu0" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Gpu|INTEL"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="Intel" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Gráficos Intel" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Border x:Name="Gpu1Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Gpu1" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Gpu|NVIDIA"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="NVIDIA" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="GeForce y otras GPU NVIDIA" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Border x:Name="Gpu2Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Gpu2" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Gpu|AMD"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="AMD" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Radeon y otras GPU AMD" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Button x:Name="SkipGpu" Content="Omitir este paso" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageDisk" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Unidad del sistema" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Windows optimiza la unidad según su tecnología." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border x:Name="Disk0Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Disk0" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Disk|SSD / M.2"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="SSD o M.2" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Aplicar la optimización de Windows para estado sólido" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Border x:Name="Disk1Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Disk1" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Disk|HDD"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="Disco mecánico" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Aplicar la optimización de Windows para disco mecánico" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageDevice" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Tipo de equipo" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Elige el formato de este equipo para preparar su configuración de energía." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border x:Name="Device0Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Device0" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Device|Desktop"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="Equipo de escritorio" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Opciones de energía para sobremesa" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Border x:Name="Device1Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Device1" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Device|Laptop"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="Portátil" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Opciones de energía para batería" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageOffice" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Aplicaciones de Office" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Marca las aplicaciones que quieres instalar con tu licencia." Foreground="#485D56" Margin="0,0,0,12"/>
+            <UniformGrid Columns="2">
+              <Border x:Name="OfficeCardWord" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="5" Margin="0,0,7,7">
+                <CheckBox x:Name="OfficeWord">
+                  <TextBlock x:Name="OfficeLabelWord" Text="Word"/>
+                </CheckBox>
+              </Border>
+              <Border x:Name="OfficeCardExcel" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="5" Margin="0,0,7,7">
+                <CheckBox x:Name="OfficeExcel">
+                  <TextBlock x:Name="OfficeLabelExcel" Text="Excel"/>
+                </CheckBox>
+              </Border>
+              <Border x:Name="OfficeCardPowerPoint" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="5" Margin="0,0,7,7">
+                <CheckBox x:Name="OfficePowerPoint">
+                  <TextBlock x:Name="OfficeLabelPowerPoint" Text="PowerPoint"/>
+                </CheckBox>
+              </Border>
+              <Border x:Name="OfficeCardOutlook" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="5" Margin="0,0,7,7">
+                <CheckBox x:Name="OfficeOutlook">
+                  <TextBlock x:Name="OfficeLabelOutlook" Text="Outlook"/>
+                </CheckBox>
+              </Border>
+              <Border x:Name="OfficeCardAccess" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="5" Margin="0,0,7,7">
+                <CheckBox x:Name="OfficeAccess">
+                  <TextBlock x:Name="OfficeLabelAccess" Text="Access"/>
+                </CheckBox>
+              </Border>
+              <Border x:Name="OfficeCardVisio" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="5" Margin="0,0,7,7">
+                <CheckBox x:Name="OfficeVisio">
+                  <TextBlock x:Name="OfficeLabelVisio" Text="Visio"/>
+                </CheckBox>
+              </Border>
+              <Border x:Name="OfficeCardPublisher" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="5" Margin="0,0,7,7">
+                <CheckBox x:Name="OfficePublisher">
+                  <TextBlock x:Name="OfficeLabelPublisher" Text="Publisher"/>
+                </CheckBox>
+              </Border>
+              <Border x:Name="OfficeCardOneNote" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="5" Margin="0,0,7,7">
+                <CheckBox x:Name="OfficeOneNote">
+                  <TextBlock x:Name="OfficeLabelOneNote" Text="OneNote"/>
+                </CheckBox>
+              </Border>
+            </UniformGrid>
+            <TextBlock Text="" x:Name="OfficeCount" Margin="0,6,0,12"/>
+            <WrapPanel>
+              <Button x:Name="OfficeNext" Content="Continuar" Background="#176452" Foreground="White" BorderBrush="#176452"/>
+              <Button x:Name="OfficeSkip" Content="Omitir Office"/>
+            </WrapPanel>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageApps" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Programas y bibliotecas" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Selecciona los componentes que quieras añadir a Windows." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="9" Padding="18" Margin="0,0,0,12">
+              <StackPanel>
+                <UniformGrid Columns="2">
+                  <CheckBox x:Name="App0_0" Content="Framework"/>
+                  <CheckBox x:Name="App0_1" Content=".NET 8"/>
+                  <CheckBox x:Name="App0_2" Content="VCredist"/>
+                  <CheckBox x:Name="App0_3" Content="DirectX"/>
+                  <CheckBox x:Name="App0_4" Content="MSI Afterburner"/>
+                  <CheckBox x:Name="App1_0" Content="Free Download Man."/>
+                  <CheckBox x:Name="App1_1" Content="Google Chrome"/>
+                  <CheckBox x:Name="App1_2" Content="Mozilla Firefox"/>
+                  <CheckBox x:Name="App1_3" Content="Opera"/>
+                  <CheckBox x:Name="App1_4" Content="Brave"/>
+                  <CheckBox x:Name="App2_0" Content="AIMP"/>
+                  <CheckBox x:Name="App2_1" Content="PotPlayer"/>
+                  <CheckBox x:Name="App2_2" Content="VLC"/>
+                  <CheckBox x:Name="App2_3" Content="K-Lite Codec"/>
+                  <CheckBox x:Name="App3_0" Content="7 Zip"/>
+                  <CheckBox x:Name="App3_1" Content="WinRAR"/>
+                  <CheckBox x:Name="App3_2" Content="Greenshot"/>
+                  <CheckBox x:Name="App3_3" Content="HWiNFO"/>
+                  <CheckBox x:Name="App3_4" Content="Menú Nexo"/>
+                  <CheckBox x:Name="App3_5" Content="Java v8 Update"/>
+                </UniformGrid>
+              </StackPanel>
+            </Border>
+            <TextBlock Text="" x:Name="AppCount" Margin="0,0,0,8"/>
+            <Button x:Name="AppsNext" Content="Continuar" Background="#176452" Foreground="White" BorderBrush="#176452" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageCustom" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Escritorio" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Combina un fondo, iconos y paneles o elige un tema." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="9" Padding="18" Margin="0,0,0,12">
+              <StackPanel>
+                <Rectangle x:Name="DesktopPreview" Height="95" RadiusX="5" RadiusY="5" Margin="0,0,0,12"/>
+                <WrapPanel>
+                  <Button x:Name="ThemeNEXO" Content="NEXO"/>
+                  <Button x:Name="ThemeXP" Content="XP"/>
+                  <Button x:Name="ThemeSEVEN" Content="SEVEN"/>
+                  <Button x:Name="ThemeNEON" Content="NEON"/>
+                  <Button x:Name="ThemeBASIC" Content="BASIC"/>
+                  <Button x:Name="ThemeMAC" Content="MAC"/>
+                </WrapPanel>
+                <WrapPanel>
+                  <Button x:Name="RandomTheme" Content="Tema aleatorio"/>
+                  <Button x:Name="ResetTheme" Content="Restablecer"/>
+                </WrapPanel>
+              </StackPanel>
+            </Border>
+            <WrapPanel>
+              <StackPanel Width="165" Margin="0,0,10,9">
+                <TextBlock Text="Fondo"/>
+                <ComboBox x:Name="Wallpaper" SelectedIndex="0" Padding="5">
+                  <ComboBoxItem Content="Wallpaper Hojas"/>
+                  <ComboBoxItem Content="Wallpaper Neon"/>
+                  <ComboBoxItem Content="Wallpaper Ice"/>
+                  <ComboBoxItem Content="Wallpaper Nexo"/>
+                  <ComboBoxItem Content="Default"/>
+                </ComboBox>
+              </StackPanel>
+              <StackPanel Width="165" Margin="0,0,10,9">
+                <TextBlock Text="Widgets"/>
+                <ComboBox x:Name="Rainmeter" SelectedIndex="0" Padding="5">
+                  <ComboBoxItem Content="Skin Neon"/>
+                  <ComboBoxItem Content="Ninguno"/>
+                  <ComboBoxItem Content="Skin Canopy"/>
+                  <ComboBoxItem Content="Skin NeonBasic"/>
+                  <ComboBoxItem Content="Skin Round"/>
+                </ComboBox>
+              </StackPanel>
+              <StackPanel Width="165" Margin="0,0,10,9">
+                <TextBlock Text="Iconos"/>
+                <ComboBox x:Name="Icons" SelectedIndex="0" Padding="5">
+                  <ComboBoxItem Content="Icons Vivid"/>
+                  <ComboBoxItem Content="Default"/>
+                  <ComboBoxItem Content="Icons Windows12"/>
+                  <ComboBoxItem Content="Icons Numix"/>
+                </ComboBox>
+              </StackPanel>
+              <StackPanel Width="165" Margin="0,0,10,9">
+                <TextBlock Text="Inicio"/>
+                <ComboBox x:Name="StartMenu" SelectedIndex="0" Padding="5">
+                  <ComboBoxItem Content="Inicio Launch"/>
+                  <ComboBoxItem Content="Default"/>
+                  <ComboBoxItem Content="Inicio Win7"/>
+                  <ComboBoxItem Content="Inicio Win11"/>
+                </ComboBox>
+              </StackPanel>
+              <StackPanel Width="165" Margin="0,0,10,9">
+                <TextBlock Text="Dock"/>
+                <ComboBox x:Name="Dock" SelectedIndex="0" Padding="5">
+                  <ComboBoxItem Content="Dock Neon"/>
+                  <ComboBoxItem Content="Default"/>
+                  <ComboBoxItem Content="Dock Fluent"/>
+                  <ComboBoxItem Content="Dock MAC"/>
+                </ComboBox>
+              </StackPanel>
+            </WrapPanel>
+            <WrapPanel>
+              <CheckBox x:Name="MenuTranslucent" Content="Transparencia del menú"/>
+              <CheckBox x:Name="ExplorerTranslucent" Content="Transparencia del explorador"/>
+            </WrapPanel>
+            <Button x:Name="CustomNext" Content="Incluir escritorio y continuar" Background="#176452" Foreground="White" BorderBrush="#176452" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageMode" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Perfil de ajustes" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Elige los cambios que quieres incluir en el plan." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border x:Name="Mode0Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Mode0" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Mode|Seguro"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="Seguro" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Mostrar extensiones y usar el plan equilibrado" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Border x:Name="Mode1Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Mode1" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Mode|Medio"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="Medio" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Añadir reducción de transparencias y sugerencias" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+            <Border x:Name="Mode2Card" Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,8">
+              <DockPanel>
+                <Button x:Name="Mode2" Content="Seleccionar" DockPanel.Dock="Right" VerticalAlignment="Center" Tag="Mode|Extremo"/>
+                <StackPanel Margin="0,0,12,0">
+                  <TextBlock Text="Juegos" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                  <TextBlock Text="Añadir la desactivación de la grabación de juegos" Foreground="#485D56"/>
+                </StackPanel>
+              </DockPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageDebloat" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Aplicaciones preinstaladas" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Marca únicamente las aplicaciones que quieras quitar de tu usuario." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="9" Padding="18" Margin="0,0,0,12">
+              <StackPanel>
+                <UniformGrid Columns="2">
+                  <CheckBox x:Name="Debloat0" Content="Quitar Noticias"/>
+                  <CheckBox x:Name="Debloat1" Content="Quitar Comentarios"/>
+                  <CheckBox x:Name="Debloat2" Content="Quitar Primeros Pasos"/>
+                  <CheckBox x:Name="Debloat3" Content="Quitar Cámara"/>
+                  <CheckBox x:Name="Debloat4" Content="Quitar MS Teams"/>
+                  <CheckBox x:Name="Debloat5" Content="Quitar Tu Teléfono"/>
+                  <CheckBox x:Name="Debloat6" Content="Quitar Obtener Ayuda"/>
+                  <CheckBox x:Name="Debloat7" Content="Quitar Contactos"/>
+                  <CheckBox x:Name="Debloat8" Content="Quitar Mapas"/>
+                  <CheckBox x:Name="Debloat9" Content="Quitar Skype"/>
+                  <CheckBox x:Name="Debloat10" Content="Quitar OneNote"/>
+                  <CheckBox x:Name="Debloat11" Content="Quitar Correo y Calendario"/>
+                  <CheckBox x:Name="Debloat12" Content="Quitar MS Designer"/>
+                  <CheckBox x:Name="Debloat13" Content="Quitar Clipchamp"/>
+                  <CheckBox x:Name="Debloat14" Content="Quitar Rep. Multimedia"/>
+                  <CheckBox x:Name="Debloat15" Content="Quitar Office Hub"/>
+                  <CheckBox x:Name="Debloat16" Content="Quitar Paint 3D"/>
+                  <CheckBox x:Name="Debloat17" Content="Quitar Realidad Mixta"/>
+                  <CheckBox x:Name="Debloat18" Content="Quitar Clima y Tiempo"/>
+                  <CheckBox x:Name="Debloat19" Content="Quitar MS To Do"/>
+                  <CheckBox x:Name="Debloat20" Content="Quitar Solitario"/>
+                  <CheckBox x:Name="Debloat21" Content="Quitar Películas y TV"/>
+                  <CheckBox x:Name="Debloat22" Content="Quitar Visor 3D"/>
+                </UniformGrid>
+              </StackPanel>
+            </Border>
+            <TextBlock Text="" x:Name="DebloatCount" Margin="0,0,0,8"/>
+            <Button x:Name="DebloatNext" Content="Continuar" Background="#176452" Foreground="White" BorderBrush="#176452" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageReview" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Revisa tu selección" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Comprueba las acciones antes de abrir el motor de instalación." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="9" Padding="18" Margin="0,0,0,12">
+              <StackPanel>
+                <TextBlock Text="Acciones elegidas" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                <TextBlock Text="" x:Name="AvailableSummary"/>
+              </StackPanel>
+            </Border>
+            <Border Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="9" Padding="18" Margin="0,0,0,12">
+              <StackPanel>
+                <TextBlock Text="Estado de las opciones" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                <TextBlock Text="" x:Name="PendingSummary"/>
+              </StackPanel>
+            </Border>
+            <WrapPanel>
+              <Button x:Name="ReviewFinish" Content="Finalizar" Background="#176452" Foreground="White" BorderBrush="#176452"/>
+              <Button x:Name="ReviewEngine" Content="Revisar acciones"/>
+              <Button x:Name="SaveSelection" Content="Guardar selección"/>
+              <Button x:Name="PreviewProcess" Content="Ver proceso"/>
+            </WrapPanel>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageProcess" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Vista previa del proceso" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Consulta los datos del equipo donde se aplicará el plan." Foreground="#485D56" Margin="0,0,0,12"/>
+            <Border Background="White" BorderBrush="#D6DED8" BorderThickness="1" CornerRadius="9" Padding="18" Margin="0,0,0,12">
+              <StackPanel>
+                <TextBlock Text="Windows" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                <TextBlock Text="" x:Name="ProcessOS" Margin="0,0,0,12"/>
+                <TextBlock Text="Equipo" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                <TextBlock Text="" x:Name="ProcessBoard" Margin="0,0,0,12"/>
+                <TextBlock Text="Procesador" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                <TextBlock Text="" x:Name="ProcessProcessor" Margin="0,0,0,12"/>
+                <TextBlock Text="Memoria" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                <TextBlock Text="" x:Name="ProcessMemory" Margin="0,0,0,12"/>
+                <TextBlock Text="Unidad" FontWeight="SemiBold" FontSize="17" Margin="0,0,0,6"/>
+                <TextBlock Text="" x:Name="ProcessDrive" Margin="0,0,0,12"/>
+              </StackPanel>
+            </Border>
+            <Button x:Name="ProcessFinish" Content="Continuar" Background="#176452" Foreground="White" BorderBrush="#176452" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="PageFinish" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,0,10,8">
+            <TextBlock Text="Selección guardada" FontSize="32" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBlock Text="Puedes volver a abrir Nexo para recuperar tus preferencias." Foreground="#485D56" Margin="0,0,0,12"/>
+            <WrapPanel>
+              <Button x:Name="FinishExit" Content="Salir" Background="#176452" Foreground="White" BorderBrush="#176452"/>
+              <Button x:Name="About" Content="Acerca de Nexo"/>
+            </WrapPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </Grid>
+      <DockPanel Grid.Row="2" Margin="0,10,0,0">
+        <Button x:Name="Back" Content="‹  Volver" DockPanel.Dock="Left"/>
+        <TextBlock Text="" x:Name="Status" FontSize="12" Foreground="#51665E" VerticalAlignment="Center"/>
+      </DockPanel>
+    </Grid>
+  </Grid>
+</Window>

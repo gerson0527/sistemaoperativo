@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$OutputDirectory)
+﻿param([Parameter(Mandatory=$true)][string]$OutputDirectory)
 $ErrorActionPreference='Stop'
 Import-Module (Join-Path (Split-Path $PSScriptRoot) 'Core.psm1') -Force
 [IO.Directory]::CreateDirectory($OutputDirectory)|Out-Null
@@ -11,10 +11,12 @@ Import-Module (Join-Path (Split-Path $PSScriptRoot) 'Core.psm1') -Force
  $script:fake=[pscustomobject]@{Computer=$env:COMPUTERNAME;UserSid=[Security.Principal.WindowsIdentity]::GetCurrent().User.Value;Build=17763;X64=$true;Winget=$false;Laptop=$true}
  $p=New-NexoPlan (Request @('explorer.extensions')) $script:fake
  Assert ($p.Steps.Count -eq 1 -and -not $p.Steps[0].Blocked) 'Plan conservador en LTSC 1809'
- foreach($id in @('app.vlc','power.performance','network.drivers')){
+ foreach($id in @('power.performance','network.drivers')){
   $p=New-NexoPlan (Request @($id)) $script:fake
   Assert ([bool]$p.Steps[0].Blocked) "Bloqueo correcto: $id"
  }
+ $p=New-NexoPlan (Request @('app.vlc')) $script:fake
+ Assert (-not $p.Steps[0].Blocked) 'WinGet se prepara antes de instalar'
  Throws {New-NexoPlan (Request @('unknown.command')) $script:fake} 'Accion desconocida'
  Throws {New-NexoPlan (Request @('theme.dark','theme.light')) $script:fake} 'Temas contradictorios'
  Throws {New-NexoPlan (Request @('power.balanced','power.performance')) $script:fake} 'Planes contradictorios'
@@ -64,7 +66,7 @@ Import-Module (Join-Path (Split-Path $PSScriptRoot) 'Core.psm1') -Force
  $p=New-NexoPlan (Request @('explorer.extensions','privacy.suggestions','gaming.capture')) $script:fake
  $pp=Join-Path $dir 'plan.json';Save-NexoJson $p $pp
  $j=Invoke-NexoPlan $pp $script:run
- Assert ($j.State -eq 'Failed' -and $j.Entries.Count -eq 2 -and $script:calls.Count -eq 2) 'Fallo detiene acciones posteriores'
+ Assert ($j.State -eq 'Failed' -and $j.Entries.Count -eq 3 -and $script:calls.Count -eq 3) 'Fallo se registra y continúa acciones independientes'
  Assert ($j.Entries[0].State -eq 'Completed' -and $j.Entries[1].State -eq 'Failed') 'Diario distingue exito y fallo parcial'
  Assert ($j.Entries[1].Backup.Marker -eq 'saved-before-write') 'Backup conservado tras fallo'
  $p.UserSid='other-user';Save-NexoJson $p $pp

@@ -1,4 +1,4 @@
-param([ValidateSet('Scan','Apply','Restore')][string]$Mode='Scan',[string]$InputPath,[Parameter(Mandatory=$true)][string]$OutputPath,[string]$RunFolder)
+﻿param([ValidateSet('Scan','Apply','Restore')][string]$Mode='Scan',[string]$InputPath,[Parameter(Mandatory=$true)][string]$OutputPath,[string]$RunFolder)
 $ErrorActionPreference='Stop'
 Import-Module (Join-Path $PSScriptRoot 'Core.psm1') -Force
 $lock=$null; $held=$false

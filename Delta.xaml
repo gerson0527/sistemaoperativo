@@ -1,0 +1,13 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Nexo · DELTA Pro" Width="840" Height="650" MinWidth="640" MinHeight="560" WindowStartupLocation="CenterScreen" Background="#101A2C" Foreground="#EAF2FF" FontFamily="Segoe UI">
+ <Window.Resources>
+  <Style TargetType="Button"><Setter Property="Background" Value="#243B5C"/><Setter Property="Foreground" Value="White"/><Setter Property="Padding" Value="16,11"/><Setter Property="Margin" Value="0,0,12,12"/><Setter Property="FontSize" Value="15"/></Style>
+  <Style TargetType="TextBlock"><Setter Property="TextWrapping" Value="Wrap"/></Style>
+ </Window.Resources>
+ <Grid Margin="30">
+  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+  <StackPanel><TextBlock Text="NEXO / MÓDULO ORIGINAL" FontSize="13" Foreground="#83B8FF"/><TextBlock Text="DELTA Pro 13" FontSize="34" FontWeight="SemiBold" Margin="0,8,0,10"/><TextBlock Text="Tu copia de DELTA, integrada como aplicación independiente. Conserva sus módulos y su interfaz original." FontSize="16" Foreground="#BACAE0"/></StackPanel>
+  <Border Grid.Row="1" Background="#192A43" CornerRadius="12" Padding="18" Margin="0,22,0,20"><StackPanel><TextBlock Text="Instalar y abrir" FontSize="18" FontWeight="SemiBold"/><TextBlock Margin="0,8,0,0" Text="1. Abre el instalador original y completa sus pasos.&#10;2. Busca DELTA instalado o localiza su ejecutable.&#10;3. Pulsa Abrir DELTA para utilizar sus módulos." FontSize="15"/><TextBlock x:Name="BundleStatus" Margin="0,12,0,0" Foreground="#88D9BD" Text="Comprobando disponibilidad del paquete…"/></StackPanel></Border>
+  <StackPanel Grid.Row="2"><WrapPanel><Button x:Name="OpenDelta" Content="Abrir DELTA" Background="#2766CA"/><Button x:Name="InstallDelta" Content="Instalar DELTA"/></WrapPanel><WrapPanel><Button x:Name="DetectDelta" Content="Buscar instalado"/><Button x:Name="LocateDelta" Content="Localizar DELTA…"/><Button x:Name="VerifyDelta" Content="Verificar paquete"/></WrapPanel><ProgressBar x:Name="Busy" Height="5" IsIndeterminate="True" Visibility="Collapsed" Margin="0,8,0,12"/><TextBlock x:Name="Status" FontSize="15" Text="Elige una acción. Abrir este panel no instala ni modifica Windows."/><TextBlock x:Name="InstalledStatus" FontSize="12" Foreground="#9EB2CF" Margin="0,12,0,0"/></StackPanel>
+  <TextBlock Grid.Row="3" FontSize="12" Foreground="#9EB2CF" Text="DELTA es un producto independiente de DProjects. Las opciones elegidas en el asistente propio de Nexo no se transfieren a DELTA."/>
+ </Grid>
+</Window>

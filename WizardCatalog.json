@@ -85,25 +85,25 @@
     {
       "control": "App0_3",
       "label": "DirectX",
-      "action": "",
+      "action": "app.directx",
       "group": "Apps"
     },
     {
       "control": "App0_4",
       "label": "MSI Afterburner",
-      "action": "",
+      "action": "app.afterburner",
       "group": "Apps"
     },
     {
       "control": "App1_0",
       "label": "Free Download Man.",
-      "action": "",
+      "action": "app.fdm",
       "group": "Apps"
     },
     {
       "control": "App1_1",
       "label": "Google Chrome",
-      "action": "",
+      "action": "app.chrome",
       "group": "Apps"
     },
     {
@@ -115,25 +115,25 @@
     {
       "control": "App1_3",
       "label": "Opera",
-      "action": "",
+      "action": "app.opera",
       "group": "Apps"
     },
     {
       "control": "App1_4",
       "label": "Brave",
-      "action": "",
+      "action": "app.brave",
       "group": "Apps"
     },
     {
       "control": "App2_0",
       "label": "AIMP",
-      "action": "",
+      "action": "app.aimp",
       "group": "Apps"
     },
     {
       "control": "App2_1",
       "label": "PotPlayer",
-      "action": "",
+      "action": "app.potplayer",
       "group": "Apps"
     },
     {
@@ -145,7 +145,7 @@
     {
       "control": "App2_3",
       "label": "K-Lite Codec",
-      "action": "",
+      "action": "app.klite",
       "group": "Apps"
     },
     {
@@ -157,109 +157,109 @@
     {
       "control": "App3_1",
       "label": "WinRAR",
-      "action": "",
+      "action": "app.winrar",
       "group": "Apps"
     },
     {
       "control": "App3_2",
-      "label": "Krenshot",
-      "action": "",
+      "label": "Greenshot",
+      "action": "app.greenshot",
       "group": "Apps"
     },
     {
       "control": "App3_3",
-      "label": "Monitor HUB",
-      "action": "",
+      "label": "HWiNFO",
+      "action": "app.hwinfo",
       "group": "Apps"
     },
     {
       "control": "App3_4",
-      "label": "MENÚ Extendido",
-      "action": "",
+      "label": "Menú Nexo",
+      "action": "menu.extended",
       "group": "Apps"
     },
     {
       "control": "App3_5",
       "label": "Java v8 Update",
-      "action": "",
+      "action": "app.java8",
       "group": "Apps"
     },
     {
       "control": "Debloat0",
       "label": "Quitar Noticias",
-      "action": "",
+      "action": "remove.news",
       "group": "Debloat"
     },
     {
       "control": "Debloat1",
       "label": "Quitar Comentarios",
-      "action": "",
+      "action": "remove.feedback",
       "group": "Debloat"
     },
     {
       "control": "Debloat2",
       "label": "Quitar Primeros Pasos",
-      "action": "",
+      "action": "remove.getstarted",
       "group": "Debloat"
     },
     {
       "control": "Debloat3",
       "label": "Quitar Cámara",
-      "action": "",
+      "action": "remove.camera",
       "group": "Debloat"
     },
     {
       "control": "Debloat4",
       "label": "Quitar MS Teams",
-      "action": "",
+      "action": "remove.teams",
       "group": "Debloat"
     },
     {
       "control": "Debloat5",
       "label": "Quitar Tu Teléfono",
-      "action": "",
+      "action": "remove.phone",
       "group": "Debloat"
     },
     {
       "control": "Debloat6",
       "label": "Quitar Obtener Ayuda",
-      "action": "",
+      "action": "remove.help",
       "group": "Debloat"
     },
     {
       "control": "Debloat7",
       "label": "Quitar Contactos",
-      "action": "",
+      "action": "remove.people",
       "group": "Debloat"
     },
     {
       "control": "Debloat8",
       "label": "Quitar Mapas",
-      "action": "",
+      "action": "remove.maps",
       "group": "Debloat"
     },
     {
       "control": "Debloat9",
       "label": "Quitar Skype",
-      "action": "",
+      "action": "remove.skype",
       "group": "Debloat"
     },
     {
       "control": "Debloat10",
       "label": "Quitar OneNote",
-      "action": "",
+      "action": "remove.onenote",
       "group": "Debloat"
     },
     {
       "control": "Debloat11",
       "label": "Quitar Correo y Calendario",
-      "action": "",
+      "action": "remove.mail",
       "group": "Debloat"
     },
     {
       "control": "Debloat12",
       "label": "Quitar MS Designer",
-      "action": "",
+      "action": "remove.designer",
       "group": "Debloat"
     },
     {
@@ -271,25 +271,25 @@
     {
       "control": "Debloat14",
       "label": "Quitar Rep. Multimedia",
-      "action": "",
+      "action": "remove.music",
       "group": "Debloat"
     },
     {
       "control": "Debloat15",
       "label": "Quitar Office Hub",
-      "action": "",
+      "action": "remove.officehub",
       "group": "Debloat"
     },
     {
       "control": "Debloat16",
       "label": "Quitar Paint 3D",
-      "action": "",
+      "action": "remove.paint3d",
       "group": "Debloat"
     },
     {
       "control": "Debloat17",
       "label": "Quitar Realidad Mixta",
-      "action": "",
+      "action": "remove.mixedreality",
       "group": "Debloat"
     },
     {
@@ -301,7 +301,7 @@
     {
       "control": "Debloat19",
       "label": "Quitar MS To Do",
-      "action": "",
+      "action": "remove.todo",
       "group": "Debloat"
     },
     {
@@ -313,13 +313,13 @@
     {
       "control": "Debloat21",
       "label": "Quitar Películas y TV",
-      "action": "",
+      "action": "remove.movies",
       "group": "Debloat"
     },
     {
       "control": "Debloat22",
       "label": "Quitar Visor 3D",
-      "action": "",
+      "action": "remove.viewer3d",
       "group": "Debloat"
     }
   ],

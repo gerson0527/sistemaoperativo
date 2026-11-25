@@ -1,8 +1,14 @@
 # Nexo Assistant 0.3
 
+## DELTA Pro original integrado
+
+Pulsa **DELTA Pro** en la parte inferior de Nexo para instalar o abrir tu copia original. La entrega local incluye `Setup.exe` y `DELTA13.DTA`, con comprobación de integridad. Nexo no incluye GenID ni pasos de activación; el programa original conserva sus propios requisitos. Selecciona las funciones en DELTA: las elecciones del asistente propio de Nexo no se transfieren a este programa. No se incluye DefenderControl. Consulta [las instrucciones completas](DELTA-Integracion.html).
+
+Para preparar otra entrega local, usa `Import-Delta.ps1 -SourceFolder <carpeta>` y después `Package-Nexo.ps1 -Destination <carpeta nueva> -IncludeDelta`. Los archivos comerciales quedan excluidos de Git.
+
 Esta entrega reconstruye el recorrido visual del asistente de DELTA v13 bajo el nombre **Nexo**. Utiliza controles reales de Windows: puedes seleccionar, volver, cambiar opciones, guardar tus preferencias y enviar las acciones disponibles al motor de Nexo.
 
-Es una versión de evaluación de la interfaz, no una implementación completa de DELTA ni una ISO nueva. Office, migración, perfiles de GPU/disco, modos Seguro/Medio/Extremo, compresión y paquetes de personalización siguen pendientes. Se identifican como tales en las pantallas y en el resumen.
+Es una versión de evaluación de la interfaz, no una implementación completa de DELTA ni una ISO nueva. Esta revisión incorpora instalación selectiva de Microsoft 365 y Visio, optimización del disco, CompactOS y perfiles propios Seguro/Medio/Juegos. La migración de edición de Windows, ajustes de GPU, Publisher, MENÚ Extendido y paquetes visuales completos siguen pendientes. Se identifican como tales en las pantallas y en el resumen.
 
 ## Abrir y recorrer
 
@@ -10,10 +16,10 @@ Es una versión de evaluación de la interfaz, no una implementación completa d
 2. Lee la presentación y pulsa **Aceptar**. Abrir el asistente solo consulta el hardware.
 3. Recorre bienvenida, migración, gráficos, almacenamiento, equipo, Office, aplicaciones, personalización, modos y Debloatware.
 4. En las tarjetas, **Seleccionar** guarda la preferencia y avanza. **Volver**, bajo el panel, permite corregirla.
-5. Los botones **Instalar** de Office y Personalización conservan la posición de la referencia. En esta vista guardan la selección y continúan; no ejecutan una instalación.
+5. El botón de Office prepara las aplicaciones elegidas para el plan final. La instalación usa Microsoft 365 de 64 bits y requiere la licencia del usuario. El botón de Personalización conserva las preferencias visuales pendientes.
 6. El resumen muestra las acciones disponibles y las pendientes. **Guardar selección** conserva ambas en `%LOCALAPPDATA%\NexoAssistant\wizard-selection.json`; se recuperan al abrir de nuevo.
 7. **Revisar acciones disponibles** abre el motor con esas acciones exactas. El motor vuelve a analizar el equipo, comprueba compatibilidad y solicita la confirmación del plan antes de aplicar.
-8. **Ver pantalla de proceso** permite inspeccionar esa pantalla. Está marcada como vista previa y no simula progreso ni resultados. **Finalizar** guarda las preferencias; no afirma haber optimizado Windows.
+8. **Ver pantalla de proceso** permite inspeccionar esa pantalla. Está marcada como vista previa y no simula progreso ni resultados. **Finalizar** guarda las preferencias y abre la revisión del motor si seleccionaste acciones disponibles. Confirma el plan y pulsa **Aplicar selección** en el motor. Si solo hay preferencias pendientes, se guardan y el recorrido termina.
 
 La [guía visual](guia/Guia-del-cliente.html) contiene las 14 capturas de la aplicación y un comparador de las pantallas Gráficos y Personalización con su referencia. Las capturas muestran selecciones de prueba; no representan instalaciones realizadas.
 
@@ -27,7 +33,7 @@ Hay diferencias intencionadas: marca Nexo y versión real 0.3, descripciones del
 
 ## Motor disponible
 
-Desde el nuevo recorrido se pueden preparar .NET Framework 3.5, .NET Desktop Runtime 8, Visual C++ v14 x64, 7-Zip, Firefox, VLC y la retirada de Clipchamp, Tiempo y Solitario para el usuario actual. Son las únicas opciones de ese recorrido que se envían a ejecución.
+El recorrido incluye .NET Framework 3.5, .NET Desktop Runtime 8, Visual C++ v14 x64, DirectX, MSI Afterburner, Free Download Manager, Chrome, Firefox, Opera, Brave, AIMP, PotPlayer, VLC, K-Lite Standard, 7-Zip, WinRAR, Greenshot, HWiNFO y Java 8. Las 23 opciones de retirada de aplicaciones tienen acciones para el usuario actual. Greenshot sustituye la etiqueta Krenshot y HWiNFO sustituye Monitor HUB.
 
 **Motor y herramientas** conserva el acceso a las funciones de la versión anterior:
 
@@ -36,9 +42,9 @@ Desde el nuevo recorrido se pueden preparar .NET Framework 3.5, .NET Desktop Run
 - Preparar WLAN AutoConfig e instalar paquetes locales firmados de controladores de red.
 - Inventario, herramientas nativas, historial, registro de resultados, parada entre acciones y restauración de ajustes con copia.
 
-Los perfiles Conservador/Ligero/Juegos de ese motor son distintos de los tres modos mostrados en el nuevo recorrido. No se sustituye silenciosamente un modo pendiente por uno de ellos.
+Los perfiles del recorrido son propios de Nexo. Seguro muestra extensiones y aplica energía equilibrada. Medio añade reducción de transparencias y sugerencias. Juegos añade desactivar grabación Game DVR. La selección histórica Extremo utiliza el perfil Juegos y el plan enumera los cambios exactos.
 
-Las aplicaciones de WinGet necesitan Internet y que WinGet esté disponible. Si falta —posible en LTSC o imágenes modificadas— esas acciones se bloquean. .NET 3.5 usa DISM con Windows Update o `sources\sxs` de la misma versión de Windows. Los controladores requieren una carpeta con paquetes completos INF/CAT/SYS del fabricante; no se incluyen drivers universales.
+Las aplicaciones de WinGet necesitan Internet y que WinGet esté disponible. Si falta, Nexo usa Microsoft.WinGet.Client de PSGallery y Repair-WinGetPackageManager para prepararlo durante la ejecución. Una imagen modificada puede carecer de componentes necesarios y producir un error que queda registrado. .NET 3.5 usa DISM con Windows Update o `sources\sxs` de la misma versión de Windows. Los controladores requieren una carpeta con paquetes completos INF/CAT/SYS del fabricante; no se incluyen drivers universales.
 
 ## Registro, restauración y compatibilidad
 
@@ -65,4 +71,8 @@ Usa una carpeta nueva de capturas y un archivo de estado de prueba. Las pruebas 
 
 `Install-Portable.ps1` copia la aplicación, el motor y sus imágenes a `%LOCALAPPDATA%\Programs\NexoAssistant` y crea un acceso en el escritorio. No se ejecutó como parte de esta entrega.
 
-`Prepare-Media.ps1 -MediaRoot <carpeta>` incorpora los archivos al árbol OEM de un medio de Windows extraído. No reconstruye una ISO ni valida Windows Setup. Esta versión no está integrada en la ISO Nexo OS 0.1 existente.
+`Prepare-Media.ps1 -MediaRoot <carpeta>` incorpora los archivos al árbol OEM de un medio Windows extraído. Con `-FirstLogonNexo`, agrega SetupComplete para abrir Nexo en el primer inicio y sustituir la entrada automática del Toolkit de MiniOS. `Build-Iso.ps1` construye la ISO BIOS/UEFI a partir de la base MiniOS11 verificada. Consulta el JSON adjunto a la ISO para conocer el estado de las pruebas.
+
+## Validación de esta revisión
+
+Las pruebas de catálogo, configuración de Office, interfaz y motor se ejecutan sin instalar programas. La instalación real de la selección completa en MiniOS sigue pendiente. Office muestra su instalador para aceptar términos y completar la activación. Una instalación existente de Office bloquea esa acción para revisar compatibilidad.
